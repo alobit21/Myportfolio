@@ -1,6 +1,17 @@
 // components/ContactSection.js
-import 'daisyui/dist/full.css';
-import { FaTwitter, FaLinkedin, FaGithub, FaFacebook } from 'react-icons/fa';
+import "daisyui/dist/full.css";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
+import dynamic from "next/dynamic";
+
+// Fix: Move dynamic imports outside the component
+const FaTwitter = dynamic(
+  () => import("react-icons/fa").then((mod) => mod.FaTwitter),
+  { ssr: false }
+);
+const FaFacebook = dynamic(
+  () => import("react-icons/fa").then((mod) => mod.FaFacebook),
+  { ssr: false }
+);
 
 const ContactSection = () => {
   return (
@@ -18,22 +29,7 @@ const ContactSection = () => {
                 <FaTwitter className="mr-2" /> Twitter
               </a>
             </li>
-            <li>
-              <a
-                href="https://linkedin.com/in/yourprofile"
-                className="text-gray-400 hover:text-white flex items-center"
-              >
-                <FaLinkedin className="mr-2" /> LinkedIn
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/yourprofile"
-                className="text-gray-400 hover:text-white flex items-center"
-              >
-                <FaGithub className="mr-2" /> GitHub
-              </a>
-            </li>
+            
             <li>
               <a
                 href="https://facebook.com/yourprofile"

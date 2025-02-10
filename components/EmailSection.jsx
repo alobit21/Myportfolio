@@ -1,133 +1,113 @@
-"use client";
-import React, { useState } from "react";
-import GithubIcon from "../public/github-icon.svg";
-import LinkedinIcon from "../public/linkedin-icon.svg";
-import Link from "next/link";
-import Image from "next/image";
+// components/ContactSection.js
+import "daisyui/dist/full.css";
+import { FaLinkedin, FaGithub,FaWhatsapp } from "react-icons/fa";
+import dynamic from "next/dynamic";
 
-const EmailSection = () => {
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
+// Fix: Move dynamic imports outside the component
+const FaTwitter = dynamic(
+  () => import("react-icons/fa").then((mod) => mod.FaTwitter),
+  { ssr: false }
+);
+const FaFacebook = dynamic(
+  () => import("react-icons/fa").then((mod) => mod.FaFacebook),
+  { ssr: false }
+);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = {
-      email: e.target.email.value,
-      subject: e.target.subject.value,
-      message: e.target.message.value,
-    };
-    const JSONdata = JSON.stringify(data);
-    const endpoint = "/api/send";
-
-    // Form the request for sending data to the server.
-    const options = {
-      // The method is POST because we are sending data.
-      method: "POST",
-      // Tell the server we're sending JSON.
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Body of the request is the JSON data we created above.
-      body: JSONdata,
-    };
-
-    const response = await fetch(endpoint, options);
-    const resData = await response.json();
-
-    if (response.status === 200) {
-      console.log("Message sent.");
-      setEmailSubmitted(true);
-    }
-  };
-
+const ContactSection = () => {
   return (
-    <section
-      id="contact"
-      className="grid md:grid-cols-2 my-12 md:my-12 py-24 gap-4 relative"
-    >
-      <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary-900 to-transparent rounded-full h-80 w-80 z-0 blur-lg absolute top-3/4 -left-4 transform -translate-x-1/2 -translate-1/2"></div>
-      <div className="z-10">
-        <h5 className="text-xl font-bold text-white my-2">
-          Let&apos;s Connect
-        </h5>
-        <p className="text-[#ADB7BE] mb-4 max-w-md">
-          {" "}
-          I&apos;m currently looking for new opportunities, my inbox is always
-          open. Whether you have a question or just want to say hi, I&apos;ll
-          try my best to get back to you!
-        </p>
-        <div className="socials flex flex-row gap-2">
-          <Link href="github.com">
-            <Image src={GithubIcon} alt="Github Icon" />
-          </Link>
-          <Link href="linkedin.com">
-            <Image src={LinkedinIcon} alt="Linkedin Icon" />
-          </Link>
-        </div>
-      </div>
-      <div>
-        {emailSubmitted ? (
-          <p className="text-green-500 text-sm mt-2">
-            Email sent successfully!
-          </p>
-        ) : (
-          <form className="flex flex-col" onSubmit={handleSubmit}>
-            <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="text-white block mb-2 text-sm font-medium"
+    <section id="contact" className="py-12 bg-black pt-16">
+      <div className="container mx-auto px-4 flex flex-col md:flex-row">
+        {/* Social Media Links */}
+        <div className="md:w-1/3 mb-8 md:mb-0">
+          <h2 className="text-3xl font-bold text-white mb-4">Connect with me</h2>
+          <ul className="space-y-4">
+   
+
+
+            <li>
+              <a
+                href="https://linkedin.com/in/yourprofile"
+                className="text-gray-400 hover:text-white flex items-center"
               >
-                Your email
+                <FaLinkedin className="mr-2 text-blue-400" /> LinkedIn
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/yourprofile"
+                className="text-gray-400 hover:text-white flex items-center"
+              >
+                <FaGithub className="mr-2 text-gray-400" /> GitHub
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.facebook.com/profile.php?id=100089129044121"
+                className="text-gray-400 hover:text-white flex items-center"
+              >
+                <FaFacebook className="mr-2 text-blue-600" /> Facebook
+              </a>
+            </li>
+                          <li>
+                <a
+                  href="https://wa.me/+255688051469"
+                  className="text-gray-400 hover:text-white flex items-center"
+                >
+                  <FaWhatsapp className="mr-2 text-[#0d7c66]" /> WhatsApp
+                </a>
+              </li>
+
+          </ul>
+        </div>
+
+        {/* Contact Form */}
+        <div className="md:w-2/3 bg-gray-800 p-8 rounded shadow-lg">
+          <h2 className="text-3xl font-bold text-white mb-4">Contact Me</h2>
+          <form>
+            <div className="mb-4">
+              <label className="block text-gray-400 mb-2" htmlFor="name">
+                Name
               </label>
               <input
-                name="email"
+                type="text"
+                id="name"
+                className="w-full p-2 bg-gray-900 text-white rounded border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-400 mb-2" htmlFor="email">
+                Email
+              </label>
+              <input
                 type="email"
                 id="email"
+                className="w-full p-2 bg-gray-900 text-white rounded border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                 required
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                placeholder="jacob@google.com"
               />
             </div>
-            <div className="mb-6">
-              <label
-                htmlFor="subject"
-                className="text-white block text-sm mb-2 font-medium"
-              >
-                Subject
-              </label>
-              <input
-                name="subject"
-                type="text"
-                id="subject"
-                required
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                placeholder="Just saying hi"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="message"
-                className="text-white block text-sm mb-2 font-medium"
-              >
+            <div className="mb-4">
+              <label className="block text-gray-400 mb-2" htmlFor="message">
                 Message
               </label>
               <textarea
-                name="message"
                 id="message"
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                placeholder="Let's talk about..."
-              />
+                className="w-full p-2 bg-gray-900 text-white rounded border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                rows="4"
+                required
+              ></textarea>
             </div>
             <button
               type="submit"
-              className="bg-green-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full"
+              className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
               Send Message
             </button>
           </form>
-        )}
+        </div>
       </div>
     </section>
   );
 };
 
-export default EmailSection;
+export default ContactSection;
