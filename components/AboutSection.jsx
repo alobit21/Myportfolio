@@ -94,11 +94,11 @@ const AboutSection = () => {
   };
   return (
     <section id="about" className="text-white">
-      <div className="md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 xl:gap-16 sm:py-16">
+      <div className="md:grid md:grid-cols-2 gap-8 items-center py-8 md:px-4 px-1  xl:gap-16 sm:py-16">
         <Image src="/images/imgpro.jpg" width={500} height={500} />
         <div>
           <h2 className="text-4xl font-bold text-white mb-4">About Me</h2>
-              <p className="text-base md:text-lg">
+              <p className="text-base md:text-lg text-justify">
       I am a <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text font-bold">full stack</span> web developer with a passion for creating
       interactive and responsive web applications. I have experience
       working with <span className="bg-gradient-to-r from-green-500 to-yellow-500 text-transparent bg-clip-text font-bold">JavaScript, React, Node.js</span>,

@@ -15,7 +15,7 @@ const FaFacebook = dynamic(
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="py-12 bg-black pt-16">
+    <section id="contact" className="py-12 bg-black pt-16 mt-6">
       <div className="container mx-auto px-4 flex flex-col md:flex-row">
         {/* Social Media Links */}
         <div className="md:w-1/3 mb-8 md:mb-0">
