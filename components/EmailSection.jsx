@@ -19,10 +19,10 @@ const ContactSection = () => {
             </p>
           </div>
           <div className="flex space-x-4">
-            <a href="https://linkedin.com/in/yourprofile" className="text-gray-400 hover:text-white">
+            <a href="/" className="text-gray-400 hover:text-white">
               <FaLinkedin className="text-blue-400 text-2xl" />
             </a>
-            <a href="https://github.com/yourprofile" className="text-gray-400 hover:text-white">
+            <a href="/" className="text-gray-400 hover:text-white">
               <FaGithub className="text-gray-400 text-2xl" />
             </a>
             <a href="https://www.facebook.com/profile.php?id=100089129044121" className="text-gray-400 hover:text-white">
@@ -37,44 +37,6 @@ const ContactSection = () => {
         {/* Right Section - Contact Form */}
         <div className="md:w-2/3 bg-gray-900 p-2 md:p-8 rounded shadow-lg flex flex-col justify-center">
           <h2 className="text-3xl font-bold text-white mb-4 justify-center text-center">Contact Me</h2>
-          {/* <form className="h-full flex flex-col justify-center">
-            <div className="mb-4">
-              <label className="block text-gray-400 mb-2" htmlFor="name">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="w-full p-2 bg-gray-900 text-white rounded border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-400 mb-2" htmlFor="email">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full p-2 bg-gray-900 text-white rounded border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-400 mb-2" htmlFor="message">
-                Message
-              </label>
-              <textarea
-                id="message"
-                className="w-full p-2 bg-gray-900 text-white rounded border border-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                rows="4"
-                required
-              ></textarea>
-            </div>
-            <button type="submit" className="w-full py-2 bg-gray-700 text-white rounded hover:bg-blue-700">
-              Send Message
-            </button>
-          </form> */}
     <ContactForm />
 
         </div>
