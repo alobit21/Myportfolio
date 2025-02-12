@@ -33,8 +33,8 @@ const HeroSection = () => {
             />
           </h1>
           <p className="text-[#ADB7BE] text-base sm:text-lg mb-6 lg:text-xl text-justify">
-  I am a <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400">passionate</span> and 
-  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">innovative</span> developer 
+  I am a <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 px-1">passionate</span> and 
+  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 ">innovative</span> developer 
   dedicated to building <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">dynamic</span>, 
   <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-pink-500">user-friendly</span>, and 
   <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-500">high-performance</span> applications. 
