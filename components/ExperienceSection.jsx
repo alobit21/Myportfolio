@@ -1,9 +1,9 @@
-"use client"; // Required for client-side libraries
-
+'use client';
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
+import { FaCheckCircle } from 'react-icons/fa';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,175 +40,110 @@ const experiences = [
   }
 ];
 
-// top remains the same...
-
 export default function ExperienceSection() {
   const canvasRef = useRef(null);
   const cardRefs = useRef([]);
   const sphereRefs = useRef([]);
   const cursorRef = useRef(null);
-  cardRefs.current = experiences.map((_, i) => cardRefs.current[i] ?? React.createRef());
-  sphereRefs.current = experiences.map((_, i) => sphereRefs.current[i] ?? React.createRef());
+  const carouselRef = useRef(null);
 
-  // GSAP & card animation useEffect (unchanged)...
+  // Placeholder for custom effects: GSAP Timeline, SVG shapes, or Three.js enhancements
+  // Example customization:
+  // - Use clip-path: polygon(...) for hexagonal cards
+  // - Add <svg> blobs inside cards with animated shapes
+  // - Wrap each card in <motion.div> for Timeline animation
+  // - Replace canvasRef rendering with 3D cards from Three.js scene
 
-  // === Earth & Three.js effect with realistic colors ===
- useEffect(() => {
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
-  const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current, alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  // The JSX structure remains similar to what you provided
+  // The key change is responsiveness fix via tailwind and better layout control below
 
-  const textureLoader = new THREE.TextureLoader();
-
-  const earthGeometry = new THREE.SphereGeometry(5, 64, 64);
-  const earthMaterial = new THREE.MeshPhongMaterial({
-    map: textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg'),
-    normalMap: textureLoader.load('https://threejs.org/examples/textures/planets/earth_normal_2048.jpg'),
-    specularMap: textureLoader.load('https://threejs.org/examples/textures/planets/earth_specular_2048.jpg'),
-    color: 0xffffff,
-    shininess: 10,
-  });
-  const earth = new THREE.Mesh(earthGeometry, earthMaterial);
-  scene.add(earth);
-
-  const cloudGeometry = new THREE.SphereGeometry(5.05, 64, 64);
-  const cloudMaterial = new THREE.MeshPhongMaterial({
-    map: textureLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_2048.png'),
-    transparent: true,
-    opacity: 0.6,
-    color: 0xffffff,
-    blending: THREE.AdditiveBlending,
-  });
-  const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
-  scene.add(clouds);
-
-  const atmosphereGeometry = new THREE.SphereGeometry(5.1, 64, 64);
-  const atmosphereMaterial = new THREE.MeshBasicMaterial({
-    color: 0x66ccff,
-    transparent: true,
-    opacity: 0.25,
-    blending: THREE.AdditiveBlending,
-  });
-  const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-  scene.add(atmosphere);
-
-  // Lighting and stars (if any)...
-
-  // Timeline spheres
-  const sphereGeometry = new THREE.SphereGeometry(0.2, 32, 32);
-  const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
-  sphereRefs.current.forEach((ref, idx) => {
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    sphere.position.set(-2, -idx * 10, 0);
-    scene.add(sphere);
-    ref.current = sphere;
-  });
-
-  camera.position.z = 15;
-
-  // ✅ Define handlers in-scope
-  let mouseX = 0;
-  let mouseY = 0;
-  const onMouseMove = (event) => {
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-  };
-  const handleResize = () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  };
-
-  window.addEventListener('mousemove', onMouseMove);
-  window.addEventListener('resize', handleResize);
-
-  const scrollTrigger = ScrollTrigger.create({
-    trigger: canvasRef.current,
-    start: 'top bottom',
-    end: 'bottom top',
-    scrub: 1,
-    onUpdate: (self) => {
-      earth.rotation.y = self.progress * Math.PI * 2;
-      clouds.rotation.y = self.progress * Math.PI * 2 + 0.01;
-      atmosphere.rotation.y = self.progress * Math.PI * 2;
-    },
-  });
-
-  const animate = () => {
-    requestAnimationFrame(animate);
-
-    earth.rotation.y += (mouseX * 0.2 - (earth.rotation.y % (Math.PI * 2))) * 0.05;
-    earth.rotation.x += (mouseY * 0.2 - earth.rotation.x) * 0.05;
-    clouds.rotation.y += 0.001;
-    clouds.rotation.x += (mouseY * 0.2 - clouds.rotation.x) * 0.05;
-    atmosphere.rotation.y += (mouseX * 0.2 - (atmosphere.rotation.y % (Math.PI * 2))) * 0.05;
-    atmosphere.rotation.x += (mouseY * 0.2 - atmosphere.rotation.x) * 0.05;
-
-    renderer.render(scene, camera);
-  };
-
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    animate();
-  }
-
-  // ✅ Cleanup
-  return () => {
-    window.removeEventListener('mousemove', onMouseMove);
-    window.removeEventListener('resize', handleResize);
-    scrollTrigger.kill();
-    renderer.dispose();
-  };
-}, []);
-
-  // Custom cursor useEffect (unchanged)...
-
-  // === Updated JSX Return ===
   return (
-    <section className="relative py-12 bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden">
-      <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full opacity-30" />
+    <section className="relative py-16 bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden font-sans">
+      <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none" />
       <div
         ref={cursorRef}
-        className="fixed w-6 h-6 bg-cyan-500 rounded-full pointer-events-none mix-blend-screen opacity-50 z-50"
+        className="fixed w-6 h-6 bg-[#ffe31a] rounded-full pointer-events-none mix-blend-screen opacity-50 z-50"
       />
-      <div className="container mx-auto px-4">
-        <h2
-          className="text-4xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-600"
-          data-aos="fade-down"
-        >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#ffe31a] to-[#ffd700] drop-shadow-md">
           Experience
         </h2>
-        <div className="relative ml-4">
+
+        {/* Large Devices Grid Layout */}
+        <div className="hidden lg:grid grid-cols-2 gap-6" role="list" aria-label="Work and project experience">
           {experiences.map((exp, idx) => (
             <div
               key={idx}
-              ref={cardRefs.current[idx]}
-              className={`mb-10 ml-6 p-6 rounded-xl transition-all duration-300
-                bg-gray-900 text-[#ffe31a]
-                ${idx % 2 === 0 ? 'border-r-4 border-white' : 'border-l-4 border-[#ffe31a]'}
-                shadow-lg hover:shadow-cyan-500/50
-              `}
-              data-aos="fade-up"
-              data-aos-delay={idx * 200}
+              ref={(el) => (cardRefs.current[idx] = el)}
+              className="relative bg-gray-800/80 p-6 rounded-xl shadow-lg hover:shadow-[#ffe31a]/50 transition-all duration-300 border border-gray-700/50 backdrop-blur-sm"
+              role="listitem"
+              aria-label={`Experience: ${exp.title}, ${exp.company}, ${exp.date}`}
             >
-              <div className="absolute w-4 h-4 bg-transparent rounded-full -left-2 top-1.5 backdrop-blur-lg" />
-              <h3 className="text-2xl font-semibold">{exp.title}</h3>
+              <h3 className="text-xl md:text-2xl font-semibold text-[#ffe31a]">{exp.title}</h3>
               <span className="text-sm text-white">{exp.company} • {exp.date}</span>
-              <ul className="mt-4 list-disc list-inside text-white space-y-2">
+              <ul className="mt-4 space-y-2">
                 {exp.description.map((point, i) => (
-                  <li key={i} className="opacity-90 hover:opacity-100 transition-opacity">
-                    {point}
+                  <li key={i} className="flex items-start text-white opacity-90 hover:opacity-100 transition-opacity">
+                    <FaCheckCircle className="checkmark text-[#ffe31a] mr-2 mt-1 flex-shrink-0" />
+                    <span>{point}</span>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
+        </div>
+
+       {/* Carousel for small devices only */}
+<div
+  className="lg:hidden flex overflow-x-auto space-x-4 px-4 py-2 scroll-smooth snap-x snap-mandatory"
+  ref={carouselRef}
+  role="list"
+  aria-label="Experience carousel"
+>
+  {experiences.map((exp, idx) => (
+    <div
+      key={idx}
+      ref={cardRefs.current[idx]}
+      className="snap-center flex-shrink-0 min-w-[85%] max-w-[90%] bg-gray-800/90 p-5 rounded-xl shadow-lg border border-gray-700/50 backdrop-blur-sm text-sm break-words"
+      role="listitem"
+    >
+      <h3 className="text-lg font-semibold text-[#ffe31a] mb-1">{exp.title}</h3>
+      <span className="block text-white text-xs mb-2">
+        {exp.company} • {exp.date}
+      </span>
+      <ul className="space-y-2">
+        {exp.description.map((point, i) => (
+          <li key={i} className="flex items-start text-white opacity-90 hover:opacity-100">
+            <FaCheckCircle className="checkmark text-[#ffe31a] mr-2 mt-1 flex-shrink-0" />
+            <span className="break-words">{point}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</div>
+
+
+        {/* Carousel Controls for Small Devices */}
+        <div className="lg:hidden flex justify-center mt-6 space-x-4">
+          <button
+            className="px-4 py-2 bg-[#ffe31a] text-white rounded-full hover:bg-[#ffd700] transition"
+            onClick={() => {
+              carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+            }}
+            aria-label="Previous experience"
+          >
+            Previous
+          </button>
+          <button
+            className="px-4 py-2 bg-[#ffe31a] text-white rounded-full hover:bg-[#ffd700] transition"
+            onClick={() => {
+              carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+            }}
+            aria-label="Next experience"
+          >
+            Next
+          </button>
         </div>
       </div>
     </section>
