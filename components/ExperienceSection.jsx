@@ -2,7 +2,6 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import * as THREE from 'three';
 import { FaCheckCircle } from 'react-icons/fa';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -58,7 +57,7 @@ export default function ExperienceSection() {
   // The key change is responsiveness fix via tailwind and better layout control below
 
   return (
-    <section className="relative py-16 bg-gradient-to-b from-gray-900 to-gray-800 text-white overflow-hidden font-sans">
+    <section className="relative py-16 bg-gray-900 text-white overflow-hidden font-sans">
       <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none" />
       <div
         ref={cursorRef}
