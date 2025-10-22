@@ -11,7 +11,7 @@ const projectsData = [
      image: "/images/projects/expenses.png",
     tag: ["All", "Web"],
     gitUrl: "/",
-    previewUrl: "/https://expenses.seranise.co.tz/",
+    previewUrl: "https://expenses.seranise.co.tz/",
   },
   {
     id: 2,
@@ -38,7 +38,7 @@ const projectsData = [
      image: "/images/projects/blog.png",
     tag: ["All", "Web"],
     gitUrl: "/",
-    previewUrl: "/https://macblog.tarxemo.com/",
+    previewUrl: "https://macblog.tarxemo.com/",
   },
   {
     id: 7,
@@ -47,7 +47,7 @@ const projectsData = [
     image: "/images/projects/djreact.png",
     tag: ["All", "Web"],
     gitUrl: "/",
-    previewUrl: "/https://github.com/alobit21/Django-React-Jwt",
+    previewUrl: "https://github.com/alobit21/Django-React-Jwt",
   },
   {
     id: 8,
