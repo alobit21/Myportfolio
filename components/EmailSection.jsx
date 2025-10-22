@@ -19,16 +19,16 @@ const ContactSection = () => {
             </p>
           </div>
           <div className="flex space-x-4">
-            <a href="/" className="text-white hover:text-[#ffe31a]">
+            <a href="/www.linkedin.com/in/aloyce-mtavangu-5932652a0/" className="text-white hover:text-[#ffe31a]">
               <FaLinkedin className="text-2xl" />
             </a>
-            <a href="/" className="text-white hover:text-[#ffe31a]">
+            <a href="/https://github.com/alobit21" className="text-white hover:text-[#ffe31a]">
               <FaGithub className="text-2xl" />
             </a>
             <a href="https://www.facebook.com/profile.php?id=100089129044121" className="text-white hover:text-[#ffe31a]">
               <FaFacebook className="text-2xl" />
             </a>
-            <a href="https://wa.me/+255688051469" className="text-white hover:text-[#ffe31a]">
+            <a href="https://wa.me/+255749380797" className="text-white hover:text-[#ffe31a]">
               <FaWhatsapp className="text-2xl" />
             </a>
           </div>

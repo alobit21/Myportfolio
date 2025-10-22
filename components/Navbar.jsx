@@ -32,13 +32,8 @@ const Navbar = () => {
     <nav className="fixed w-full border border-gray-700 top-0 left-0 right-0 z-10 bg-gray-900 bg-opacity-100">
       <div className="container mx-auto flex items-center justify-between px-4 py-2 lg:py-4">
         <Link href="/">
-          <Image 
-            src="/favicon.ico" // Replace with your actual logo path
-            alt="MAC Logo"
-            width={50} // Adjust size as needed
-            height={50}
-            className="cursor-pointer"
-          />
+        
+          <span className="text-yellow-400 font-bold">CODEWITHMAC</span>
         </Link>
         <div className="mobile-menu md:hidden">
           {!navbarOpen ? (

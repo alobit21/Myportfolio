@@ -13,7 +13,7 @@ const HeroSection = () => {
           <div className="text-center lg:text-left">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
               <span className="block text-gray-300">Hi, I'm</span>
-              <span className="text-yellow-400">Mac</span>
+              <span className="text-yellow-400">Aloyce Mtavangu</span>
             </h1>
             
             <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-gray-300">
