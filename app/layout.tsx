@@ -27,12 +27,12 @@ function ThemeWrapper({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (!mounted) {
-    return <div className={inter.className} suppressHydrationWarning>{children}</div>;
+    return <div className={`${inter.className} min-h-screen bg-gray-900 text-gray-100`} suppressHydrationWarning>{children}</div>;
   }
 
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-      <div className={`${inter.className} min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200`}>
+      <div className={`${inter.className} min-h-screen bg-gray-900 text-gray-100 transition-colors duration-200`}>
         {children}
       </div>
     </ThemeProvider>
@@ -74,7 +74,7 @@ export default function RootLayout({
         <ThemeWrapper>
           <Navbar />
           <main className="min-h-screen">{children}</main>
-          <div className="border-t border-gray-300 bg-gray-900"></div>
+          <div className="border-t border-gray-300 "></div>
           <Footer />
         </ThemeWrapper>
       </body>
