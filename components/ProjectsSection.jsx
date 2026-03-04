@@ -1,6 +1,5 @@
 'use client'
-import React, { useState, useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 const projectsData = [
@@ -62,24 +61,14 @@ const projectsData = [
 
 // ProjectTag Component
 const ProjectTag = ({ name, onClick, isSelected }) => {
-  const tagRef = useRef(null);
-
-  useEffect(() => {
-    gsap.to(tagRef.current, {
-      scale: isSelected ? 1.1 : 1,
-      opacity: isSelected ? 1 : 0.7,
-      duration: 0.3,
-      ease: 'power2.out',
-    });
-  }, [isSelected]);
-
   return (
     <button
-      ref={tagRef}
       onClick={() => onClick(name)}
-      className={`px-4 py-2 rounded-full font-semibold text-sm sm:text-base ${
-        isSelected ? 'bg-[#ffe31a] text-gray-900' : 'bg-gray-900 text-[#ffe31a] border-2 border-[#ffe31a]'
-      } hover:bg-[#ffe31a] hover:text-gray-900 transition-all duration-300 mx-1`}
+      className={`px-4 py-2 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 ease-in-out mx-1 ${
+        isSelected 
+          ? 'bg-[#ffe31a] text-gray-900 scale-105' 
+          : 'bg-gray-900 text-[#ffe31a] border-2 border-[#ffe31a] hover:bg-[#ffe31a] hover:text-gray-900'
+      }`}
     >
       {name}
     </button>
@@ -88,73 +77,31 @@ const ProjectTag = ({ name, onClick, isSelected }) => {
 
 // ProjectCard Component
 const ProjectCard = ({ title, description, imgUrl, gitUrl, previewUrl }) => {
-  const cardRef = useRef(null);
-
-  useEffect(() => {
-    const card = cardRef.current;
-
-    // GSAP Hover Tilt Effect
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      const rotateX = (y - centerY) / 20;
-      const rotateY = (centerX - x) / 20;
-
-      gsap.to(card, {
-        rotationX: -rotateX,
-        rotationY: -rotateY,
-        transformPerspective: 500,
-        ease: 'power2.out',
-        duration: 0.2,
-      });
-    });
-
-    card.addEventListener('mouseleave', () => {
-      gsap.to(card, {
-        rotationX: 0,
-        rotationY: 0,
-        ease: 'power2.out',
-        duration: 0.3,
-      });
-    });
-
-    return () => {
-      card.removeEventListener('mousemove', () => {});
-      card.removeEventListener('mouseleave', () => {});
-    };
-  }, []);
-
   return (
-    <div
-      ref={cardRef}
-      className="bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
-    >
-      <div className="relative w-full h-48">
+    <div className="bg-gray-900/90 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-1 flex flex-col h-full backdrop-blur-sm border border-gray-700/50">
+      <div className="relative w-full h-48 overflow-hidden">
         <Image
           src={imgUrl}
           alt={title}
           layout="fill"
           objectFit="cover"
-          className="transition-transform duration-500 hover:scale-105"
+          className="transition-transform duration-700 ease-in-out hover:scale-110"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
       </div>
       <div className="p-4 flex flex-col flex-grow">
-        <h3 className="text-xl font-semibold text-[#ffe31a] mb-2">{title}</h3>
-        <p className="text-white text-sm flex-grow">{description}</p>
+        <h3 className="text-xl font-semibold text-[#ffe31a] mb-2 transition-colors duration-300">{title}</h3>
+        <p className="text-white/90 text-sm flex-grow leading-relaxed">{description}</p>
         <div className="mt-4 flex gap-2">
           <a
             href={gitUrl}
-            className="px-4 py-2 rounded-full bg-[#ffe31a] text-gray-900 hover:bg-white text-sm font-semibold transition-all duration-300"
+            className="px-4 py-2 rounded-full bg-[#ffe31a] text-gray-900 hover:bg-white hover:scale-105 text-sm font-semibold transition-all duration-300 ease-in-out shadow-md hover:shadow-lg"
           >
             GitHub
           </a>
           <a
             href={previewUrl}
-            className="px-4 py-2 rounded-full bg-transparent border-2 border-[#ffe31a] text-[#ffe31a] hover:bg-[#ffe31a] hover:text-gray-900 text-sm font-semibold transition-all duration-300"
+            className="px-4 py-2 rounded-full bg-transparent border-2 border-[#ffe31a] text-[#ffe31a] hover:bg-[#ffe31a] hover:text-gray-900 hover:scale-105 text-sm font-semibold transition-all duration-300 ease-in-out"
           >
             Preview
           </a>
@@ -166,35 +113,12 @@ const ProjectCard = ({ title, description, imgUrl, gitUrl, previewUrl }) => {
 
 const ProjectsSection = () => {
   const [tag, setTag] = useState('All');
-  const containerRef = useRef(null);
 
   const handleTagChange = (newTag) => {
     setTag(newTag);
-    // Animate card transition
-    gsap.to(containerRef.current.children, {
-      opacity: 0,
-      y: 50,
-      duration: 0.3,
-      onComplete: () => {
-        gsap.fromTo(
-          containerRef.current.children,
-          { opacity: 0, y: -50 },
-          { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out' }
-        );
-      },
-    });
   };
 
   const filteredProjects = projectsData.filter((project) => project.tag.includes(tag));
-
-  useEffect(() => {
-    // Initial card animation
-    gsap.fromTo(
-      containerRef.current.children,
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out', delay: 0.2 }
-    );
-  }, []);
 
   return (
     <section id="projects" className="relative py-12 text-white overflow-hidden" 
@@ -221,15 +145,12 @@ const ProjectsSection = () => {
         
         {/* Containerized Project Cards */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            ref={containerRef}
-            className="grid md:grid-cols-3 gap-8 md:gap-12 overflow-x-auto flex flex-nowrap md:flex-wrap snap-x snap-mandatory scrollbar-hide md:scrollbar-default"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
+          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {filteredProjects.map((project, index) => (
               <div
                 key={project.id}
-                className="flex-shrink-0 w-[90%] sm:w-[80%] md:w-auto snap-center md:snap-none"
+                className="animate-fadeIn"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 <ProjectCard
                   title={project.title}
