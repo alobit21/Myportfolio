@@ -197,34 +197,51 @@ const ProjectsSection = () => {
   }, []);
 
   return (
-    <section id="projects" className="bg-gray-900 py-12">
-      <h2 className="text-center text-4xl font-bold text-[#ffe31a] mt-4 mb-8 md:mb-12">
-        My Projects
-      </h2>
-      <div className="text-white flex flex-row justify-center items-center gap-2 mb-4 py-6 flex-wrap">
-        <ProjectTag onClick={handleTagChange} name="All" isSelected={tag === 'All'} />
-        <ProjectTag onClick={handleTagChange} name="Web" isSelected={tag === 'Web'} />
-        <ProjectTag onClick={handleTagChange} name="Mobile" isSelected={tag === 'Mobile'} />
-      </div>
-      <div
-        ref={containerRef}
-        className="grid md:grid-cols-3 gap-8 md:gap-12 px-4 md:px-8 overflow-x-auto flex flex-nowrap md:flex-wrap snap-x snap-mandatory scrollbar-hide md:scrollbar-default"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        {filteredProjects.map((project, index) => (
+    <section id="projects" className="relative py-12 text-white overflow-hidden" 
+             style={{
+               backgroundImage: 'url(/images/projects/projects-section.jpeg)',
+               backgroundSize: 'cover',
+               backgroundPosition: 'center',
+               backgroundRepeat: 'no-repeat',
+               backgroundAttachment: 'fixed',
+               width: '100vw',
+               marginLeft: 'calc(-50vw + 50%)',
+               marginRight: 'calc(-50vw + 50%)'
+             }}>
+      <div className="absolute inset-0 bg-gray-900/70"></div>
+      <div className="relative z-10">
+        <h2 className="text-center text-4xl font-bold text-[#ffe31a] mt-4 mb-8 md:mb-12">
+          My Projects
+        </h2>
+        <div className="text-white flex flex-row justify-center items-center gap-2 mb-4 py-6 flex-wrap">
+          <ProjectTag onClick={handleTagChange} name="All" isSelected={tag === 'All'} />
+          <ProjectTag onClick={handleTagChange} name="Web" isSelected={tag === 'Web'} />
+          <ProjectTag onClick={handleTagChange} name="Mobile" isSelected={tag === 'Mobile'} />
+        </div>
+        
+        {/* Containerized Project Cards */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
-            key={project.id}
-            className="flex-shrink-0 w-[90%] sm:w-[80%] md:w-auto snap-center md:snap-none"
+            ref={containerRef}
+            className="grid md:grid-cols-3 gap-8 md:gap-12 overflow-x-auto flex flex-nowrap md:flex-wrap snap-x snap-mandatory scrollbar-hide md:scrollbar-default"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            <ProjectCard
-              title={project.title}
-              description={project.description}
-              imgUrl={project.image}
-              gitUrl={project.gitUrl}
-              previewUrl={project.previewUrl}
-            />
+            {filteredProjects.map((project, index) => (
+              <div
+                key={project.id}
+                className="flex-shrink-0 w-[90%] sm:w-[80%] md:w-auto snap-center md:snap-none"
+              >
+                <ProjectCard
+                  title={project.title}
+                  description={project.description}
+                  imgUrl={project.image}
+                  gitUrl={project.gitUrl}
+                  previewUrl={project.previewUrl}
+                />
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </section>
   );

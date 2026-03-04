@@ -106,7 +106,7 @@ const TechnologiesStackSection = () => {
   const renderTechCategory = (category, index) => (
     <motion.div 
       key={index} 
-      className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 hover:border-yellow-500/30 transition-colors"
+      className="bg-gray-800/80 rounded-xl p-6 border border-gray-600/50 hover:border-yellow-500/50 transition-colors shadow-xl"
       variants={itemVariants}
     >
       <h3 className="text-xl font-semibold mb-6 text-yellow-400">{category.title}</h3>
@@ -116,7 +116,7 @@ const TechnologiesStackSection = () => {
           return (
             <motion.div 
               key={techIndex} 
-              className="flex items-center space-x-3 p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition-colors"
+              className="flex items-center space-x-3 p-3 bg-gray-700/60 rounded-lg hover:bg-gray-700/80 transition-colors border border-gray-600/30"
               whileHover={{ scale: 1.02, x: 5 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
@@ -134,7 +134,7 @@ const TechnologiesStackSection = () => {
   const renderTechItem = (tech, index) => (
     <motion.div
       key={`${tech.name}-${index}`}
-      className="inline-flex items-center space-x-3 px-6 py-3 bg-gray-800/90 rounded-lg border border-gray-700/60 hover:border-yellow-500/60 transition-all duration-300 shadow-lg hover:shadow-yellow-500/10"
+      className="inline-flex items-center space-x-3 px-6 py-3 bg-gray-800/95 rounded-lg border border-gray-600/60 hover:border-yellow-500/60 transition-all duration-300 shadow-xl hover:shadow-yellow-500/20"
       whileHover={{ scale: 1.05, y: -3 }}
     >
       <div style={{ color: tech.color }} className="text-2xl">
@@ -145,8 +145,19 @@ const TechnologiesStackSection = () => {
   );
 
   return (
-    <section ref={ref} className="py-20 bg-gray-900 text-white overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={ref} className="relative py-20 text-white overflow-hidden" 
+             style={{
+               backgroundImage: 'url(/images/footer/footer.jpeg)',
+               backgroundSize: 'cover',
+               backgroundPosition: 'center',
+               backgroundRepeat: 'no-repeat',
+               backgroundAttachment: 'fixed',
+               width: '100vw',
+               marginLeft: 'calc(-50vw + 50%)',
+               marginRight: 'calc(-50vw + 50%)'
+             }}>
+      <div className="absolute inset-0 bg-gray-900/60"></div>
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div 
           className="text-center mb-16"

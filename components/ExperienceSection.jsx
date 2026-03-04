@@ -57,13 +57,24 @@ export default function ExperienceSection() {
   // The key change is responsiveness fix via tailwind and better layout control below
 
   return (
-    <section className="relative py-16 bg-gray-900 text-white overflow-hidden font-sans">
+    <section className="relative py-16 bg-gray-900 text-white overflow-hidden font-sans min-h-screen" 
+             style={{
+               backgroundImage: 'url(/images/experience/experience-section.jpeg)',
+               backgroundSize: '100% 100%',
+               backgroundPosition: 'center',
+               backgroundRepeat: 'no-repeat',
+               backgroundAttachment: 'fixed',
+               width: '100vw',
+               marginLeft: 'calc(-50vw + 50%)',
+               marginRight: 'calc(-50vw + 50%)'
+             }}>
+      <div className="absolute inset-0 bg-gray-900/80"></div>
       <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none" />
       <div
         ref={cursorRef}
         className="fixed w-6 h-6 bg-[#ffe31a] rounded-full pointer-events-none mix-blend-screen opacity-50 z-50"
       />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#ffe31a] to-[#ffd700] drop-shadow-md">
           Experience
         </h2>

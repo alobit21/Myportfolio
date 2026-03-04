@@ -30,8 +30,19 @@ const handleSubmit = async (event) => {
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="py-12 bg-black pt-16">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row">
+    <section id="contact" className="relative py-12 pt-16 text-white" 
+             style={{
+               backgroundImage: 'url(/images/footer/footer.jpeg)',
+               backgroundSize: 'cover',
+               backgroundPosition: 'center',
+               backgroundRepeat: 'no-repeat',
+               backgroundAttachment: 'fixed',
+               width: '100vw',
+               marginLeft: 'calc(-50vw + 50%)',
+               marginRight: 'calc(-50vw + 50%)'
+             }}>
+      <div className="absolute inset-0 bg-black/80"></div>
+      <div className="relative z-10 container mx-auto px-4 flex flex-col md:flex-row">
         {/* Social Media Links */}
         <div className="md:w-1/3 mb-8 md:mb-0">
           <h2 className="text-3xl font-bold text-white mb-4">Connect with me</h2>
@@ -57,15 +68,9 @@ const ContactSection = () => {
         </div>
 
         {/* Contact Form */}
-  
-
- 
-    <div className="min-h-screen flex items-center justify-center bg-black">
-      <ContactForm />
-    </div>
- 
-
-
+        <div className="md:w-2/3 flex items-center justify-center">
+          <ContactForm />
+        </div>
       </div>
     </section>
   );
