@@ -19,7 +19,7 @@ const education = [
     title: "University of Dodoma",
     type: "University",
     date: "2022 - Present",
-    icon: <FaUniversity className="text-yellow-400 text-xl" />,
+    icon: <FaUniversity className="text-[#3ca2fa] text-xl" />,
     description: "Pursuing a degree in Computer Science. Actively participating in coding competitions and open source projects."
   },
   {
@@ -27,7 +27,7 @@ const education = [
     title: "Njombe Secondary School",
     type: "Advanced Level",
     date: "2020 - 2022",
-    icon: <FaSchool className="text-yellow-400 text-xl" />,
+    icon: <FaSchool className="text-[#3ca2fa] text-xl" />,
     description: "Completed Advanced Level Education with focus on Physics, Chemistry, and Mathematics (PCM)."
   },
   {
@@ -35,7 +35,7 @@ const education = [
     title: "Mkalala Secondary School",
     type: "Ordinary Level",
     date: "2016 - 2019",
-    icon: <FaSchool className="text-yellow-400 text-xl" />,
+    icon: <FaSchool className="text-[#3ca2fa] text-xl" />,
     description: "Completed Ordinary Level Education. Active participant in science and mathematics competitions."
   },
   {
@@ -43,7 +43,7 @@ const education = [
     title: "Ikwega Primary School",
     type: "Primary Education",
     date: "2007 - 2015",
-    icon: <FaGraduationCap className="text-yellow-400 text-xl" />,
+    icon: <FaGraduationCap className="text-[#3ca2fa] text-xl" />,
     description: "Completed primary education with excellent academic performance. Developed strong foundation in core subjects."
   }
 ];
@@ -130,19 +130,19 @@ const TimelineItem = ({ item, isLast }) => {
       ref={ref}
       className={`relative pl-8 pb-8 border-l-2 border-gray-700 ${isLast ? '' : 'border-opacity-50'}`}
     >
-      <div className="absolute w-4 h-4 bg-yellow-400 rounded-full -left-2 top-1"></div>
+      <div className="absolute w-4 h-4 bg-[#3ca2fa] rounded-full -left-2 top-1"></div>
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={isVisible ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.5 }}
-        className="bg-gray-800/50 p-6 rounded-lg border border-gray-700/50 hover:border-yellow-400/30 transition-all duration-300"
+        className="bg-gray-800/50 p-6 rounded-lg border border-gray-700/50 hover:border-[#3ca2fa]/30 transition-all duration-300"
       >
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-gray-700/50 rounded-full">
             {item.icon}
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-yellow-400">{item.title}</h4>
+            <h4 className="text-lg font-semibold text-[#3ca2fa]">{item.title}</h4>
             <p className="text-sm text-gray-400">{item.type} • {item.date}</p>
           </div>
         </div>
@@ -167,7 +167,7 @@ const AboutSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-3">About Me</h2>
-          <div className="w-24 h-1 bg-yellow-400 mx-auto rounded-full"></div>
+          <div className="w-24 h-1 bg-[#3ca2fa] mx-auto rounded-full"></div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-12 items-start">
@@ -183,7 +183,7 @@ const AboutSection = () => {
                 src="/images/imgpro.png"
                 alt="Profile"
                 fill
-                className="rounded-full border-4 border-yellow-400 object-cover"
+                className="rounded-full border-4 border-[#3ca2fa] object-cover"
               />
             </div>
           </motion.div>
@@ -194,7 +194,7 @@ const AboutSection = () => {
                 onClick={() => setActiveTab("about")}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                   activeTab === "about" 
-                    ? 'bg-yellow-400 text-gray-900' 
+                    ? 'bg-[#3ca2fa] text-gray-900' 
                     : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
                 }`}
               >
@@ -204,7 +204,7 @@ const AboutSection = () => {
                 onClick={() => setActiveTab("education")}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                   activeTab === "education" 
-                    ? 'bg-yellow-400 text-gray-900' 
+                    ? 'bg-[#3ca2fa] text-gray-900' 
                     : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
                 }`}
               >
@@ -214,7 +214,7 @@ const AboutSection = () => {
                 onClick={() => setActiveTab("expertise")}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                   activeTab === "expertise" 
-                    ? 'bg-yellow-400 text-gray-900' 
+                    ? 'bg-[#3ca2fa] text-gray-900' 
                     : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
                 }`}
               >
@@ -224,7 +224,7 @@ const AboutSection = () => {
                 onClick={() => setActiveTab("skills")}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                   activeTab === "skills" 
-                    ? 'bg-yellow-400 text-gray-900' 
+                    ? 'bg-[#3ca2fa] text-gray-900' 
                     : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
                 }`}
               >
@@ -235,7 +235,7 @@ const AboutSection = () => {
             <div className="mt-6">
               {activeTab === "about" && (
                 <div ref={aboutRef}>
-                  <h3 className="text-2xl font-bold text-yellow-400 mb-4">Get to know me!</h3>
+                  <h3 className="text-2xl font-bold text-[#3ca2fa] mb-4">Get to know me!</h3>
                   <p className="text-gray-300 mb-4">
                     I'm a passionate Full Stack Developer with expertise in building modern web applications.
                     With a strong foundation in both front-end and back-end technologies, I create seamless
@@ -246,7 +246,7 @@ const AboutSection = () => {
                     to pursue a career in technology. I'm constantly learning and staying up-to-date with the
                     latest industry trends and best practices.
                   </p>
-                  <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium py-2 px-6 rounded-md transition-all duration-300">
+                  <button className="bg-[#3ca2fa] hover:bg-[#3ca2fa]/80 text-gray-900 font-medium py-2 px-6 rounded-md transition-all duration-300">
                     Download CV
                   </button>
                 </div>
@@ -254,7 +254,7 @@ const AboutSection = () => {
 
               {activeTab === "education" && (
                 <div ref={educationRef} className="w-full">
-                  <h3 className="text-2xl font-bold text-yellow-400 mb-6">Education Timeline</h3>
+                  <h3 className="text-2xl font-bold text-[#3ca2fa] mb-6">Education Timeline</h3>
                   <div className="relative">
                     {education.map((item, index) => (
                       <TimelineItem 
@@ -269,12 +269,12 @@ const AboutSection = () => {
 
               {activeTab === "expertise" && (
                 <div className="w-full">
-                  <h3 className="text-2xl font-semibold text-yellow-400 mb-8">My Expertise</h3>
+                  <h3 className="text-2xl font-semibold text-[#3ca2fa] mb-8">My Expertise</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {expertise.map((item, index) => (
                       <motion.div 
                         key={index}
-                        className="flex flex-col items-center p-6 bg-gray-800/50 rounded-2xl border border-gray-700/50 hover:border-yellow-500/30 transition-colors"
+                        className="flex flex-col items-center p-6 bg-gray-800/50 rounded-2xl border border-gray-700/50 hover:border-[#3ca2fa]/30 transition-colors"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -300,12 +300,12 @@ const AboutSection = () => {
 
               {activeTab === "skills" && (
                 <div ref={skillsRef} className="w-full">
-                  <h3 className="text-2xl font-semibold text-yellow-400 mb-8">My Skills</h3>
+                  <h3 className="text-2xl font-semibold text-[#3ca2fa] mb-8">My Skills</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {skills.map((skill, index) => (
                       <motion.div 
                         key={index} 
-                        className="space-y-3 bg-gray-800/50 p-4 rounded-xl border border-gray-700/50 hover:border-yellow-500/30 transition-colors"
+                        className="space-y-3 bg-gray-800/50 p-4 rounded-xl border border-gray-700/50 hover:border-[#3ca2fa]/30 transition-colors"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -313,7 +313,7 @@ const AboutSection = () => {
                       >
                         <div className="flex justify-between items-center">
                           <span className="text-gray-100 font-medium">{skill.name}</span>
-                          <span className="text-sm text-yellow-400 font-medium">{skill.level}%</span>
+                          <span className="text-sm text-[#3ca2fa] font-medium">{skill.level}%</span>
                         </div>
                         <div className="w-full bg-gray-700/80 rounded-full h-2.5 overflow-hidden">
                           <motion.div

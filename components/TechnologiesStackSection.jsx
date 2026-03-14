@@ -106,10 +106,10 @@ const TechnologiesStackSection = () => {
   const renderTechCategory = (category, index) => (
     <motion.div 
       key={index} 
-      className="bg-gray-800/80 rounded-xl p-6 border border-gray-600/50 hover:border-yellow-500/50 transition-colors shadow-xl"
+      className="bg-gray-800/80 rounded-xl p-6 border border-gray-600/50 hover:border-[#3ca2fa]/50 transition-colors shadow-xl"
       variants={itemVariants}
     >
-      <h3 className="text-xl font-semibold mb-6 text-yellow-400">{category.title}</h3>
+      <h3 className="text-xl font-semibold mb-6 text-[#3ca2fa]">{category.title}</h3>
       <div className="space-y-4">
         {category.tech.map((techName, techIndex) => {
           const tech = getTechDetails(techName);
@@ -134,7 +134,7 @@ const TechnologiesStackSection = () => {
   const renderTechItem = (tech, index) => (
     <motion.div
       key={`${tech.name}-${index}`}
-      className="inline-flex items-center space-x-3 px-6 py-3 bg-gray-800/95 rounded-lg border border-gray-600/60 hover:border-yellow-500/60 transition-all duration-300 shadow-xl hover:shadow-yellow-500/20"
+      className="inline-flex items-center space-x-3 px-6 py-3 bg-gray-800/95 rounded-lg border border-gray-600/60 hover:border-[#3ca2fa]/60 transition-all duration-300 shadow-xl hover:shadow-[#3ca2fa]/20"
       whileHover={{ scale: 1.05, y: -3 }}
     >
       <div style={{ color: tech.color }} className="text-2xl">
@@ -165,7 +165,7 @@ const TechnologiesStackSection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#3ca2fa] to-[#3ca2fa]/80">
             Technology Stack
           </h2>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">

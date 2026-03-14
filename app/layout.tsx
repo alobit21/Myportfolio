@@ -7,8 +7,12 @@ import { ThemeProvider } from "next-themes";
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import AOS styles
 import "./globals.css";
-import Footer from "@/components/Footer";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
+
+const Footer = dynamic(() => import("@/components/Footer"), {
+  ssr: false
+});
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,13 +30,9 @@ function ThemeWrapper({ children }: { children: React.ReactNode }) {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return <div className={`${inter.className} min-h-screen bg-gray-900 text-gray-100`} suppressHydrationWarning>{children}</div>;
-  }
-
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-      <div className={`${inter.className} min-h-screen bg-gray-900 text-gray-100 transition-colors duration-200`}>
+      <div className={`${inter.className} min-h-screen bg-gray-900 text-gray-100 ${mounted ? 'transition-colors duration-200' : ''}`}>
         {children}
       </div>
     </ThemeProvider>

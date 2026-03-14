@@ -24,7 +24,7 @@ const HeroSection = () => {
           <div className="text-center lg:text-left">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
               <span className="block text-gray-300">Hi, I'm</span>
-              <span className="text-yellow-400">Aloyce Mtavangu</span>
+              <span className="text-[#3ca2fa]">Aloyce Mtavangu</span>
             </h1>
             
             <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-gray-300">
@@ -39,14 +39,14 @@ const HeroSection = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a 
                 href="#contact" 
-                className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
+                className="bg-[#3ca2fa] hover:bg-[#3ca2fa]/80 text-gray-900 font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
               >
                 Get In Touch
               </a>
               <a 
                 href="/resume.pdf" 
                 download
-                className="border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:bg-opacity-10 font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
+                className="border-2 border-[#3ca2fa] text-[#3ca2fa] hover:bg-[#3ca2fa] hover:bg-opacity-10 font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
               >
                 View Resume
               </a>
@@ -58,7 +58,7 @@ const HeroSection = () => {
                 {skills.map((skill, index) => (
                   <span 
                     key={index}
-                    className="bg-gray-800 text-yellow-400 text-sm font-medium px-4 py-2 rounded-full"
+                    className="bg-gray-800 text-[#3ca2fa] text-sm font-medium px-4 py-2 rounded-full"
                   >
                     {skill}
                   </span>
