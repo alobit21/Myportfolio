@@ -66,8 +66,8 @@ const ProjectTag = ({ name, onClick, isSelected }) => {
       onClick={() => onClick(name)}
       className={`px-4 py-2 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 ease-in-out mx-1 ${
         isSelected 
-          ? 'bg-[#ffe31a] text-gray-900 scale-105' 
-          : 'bg-gray-900 text-[#ffe31a] border-2 border-[#ffe31a] hover:bg-[#ffe31a] hover:text-gray-900'
+          ? 'bg-[#3ca2fa] text-gray-900 scale-105' 
+          : 'bg-gray-900 text-[#3ca2fa] border-2 border-[#3ca2fa] hover:bg-[#3ca2fa] hover:text-gray-900'
       }`}
     >
       {name}
@@ -90,18 +90,18 @@ const ProjectCard = ({ title, description, imgUrl, gitUrl, previewUrl }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
       </div>
       <div className="p-4 flex flex-col flex-grow">
-        <h3 className="text-xl font-semibold text-[#ffe31a] mb-2 transition-colors duration-300">{title}</h3>
+        <h3 className="text-xl font-semibold text-[#3ca2fa] mb-2 transition-colors duration-300">{title}</h3>
         <p className="text-white/90 text-sm flex-grow leading-relaxed">{description}</p>
         <div className="mt-4 flex gap-2">
           <a
             href={gitUrl}
-            className="px-4 py-2 rounded-full bg-[#ffe31a] text-gray-900 hover:bg-white hover:scale-105 text-sm font-semibold transition-all duration-300 ease-in-out shadow-md hover:shadow-lg"
+            className="px-4 py-2 rounded-full bg-[#3ca2fa] text-gray-900 hover:bg-white hover:scale-105 text-sm font-semibold transition-all duration-300 ease-in-out shadow-md hover:shadow-lg"
           >
             GitHub
           </a>
           <a
             href={previewUrl}
-            className="px-4 py-2 rounded-full bg-transparent border-2 border-[#ffe31a] text-[#ffe31a] hover:bg-[#ffe31a] hover:text-gray-900 hover:scale-105 text-sm font-semibold transition-all duration-300 ease-in-out"
+            className="px-4 py-2 rounded-full bg-transparent border-2 border-[#3ca2fa] text-[#3ca2fa] hover:bg-[#3ca2fa] hover:text-gray-900 hover:scale-105 text-sm font-semibold transition-all duration-300 ease-in-out"
           >
             Preview
           </a>
@@ -134,7 +134,7 @@ const ProjectsSection = () => {
              }}>
       <div className="absolute inset-0 bg-gray-900/70"></div>
       <div className="relative z-10">
-        <h2 className="text-center text-4xl font-bold text-[#ffe31a] mt-4 mb-8 md:mb-12">
+        <h2 className="text-center text-4xl font-bold text-[#3ca2fa] mt-4 mb-8 md:mb-12">
           My Projects
         </h2>
         <div className="text-white flex flex-row justify-center items-center gap-2 mb-4 py-6 flex-wrap">

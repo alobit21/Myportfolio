@@ -72,10 +72,10 @@ export default function ExperienceSection() {
       <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none" />
       <div
         ref={cursorRef}
-        className="fixed w-6 h-6 bg-[#ffe31a] rounded-full pointer-events-none mix-blend-screen opacity-50 z-50"
+        className="fixed w-6 h-6 bg-[#3ca2fa] rounded-full pointer-events-none mix-blend-screen opacity-50 z-50"
       />
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#ffe31a] to-[#ffd700] drop-shadow-md">
+        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#3ca2fa] to-[#3ca2fa]/80 drop-shadow-md">
           Experience
         </h2>
 
@@ -85,16 +85,16 @@ export default function ExperienceSection() {
             <div
               key={idx}
               ref={(el) => (cardRefs.current[idx] = el)}
-              className="relative bg-gray-800/80 p-6 rounded-xl shadow-lg hover:shadow-[#ffe31a]/50 transition-all duration-300 border border-gray-700/50 backdrop-blur-sm"
+              className="relative bg-gray-800/80 p-6 rounded-xl shadow-lg hover:shadow-[#3ca2fa]/50 transition-all duration-300 border border-gray-700/50 backdrop-blur-sm"
               role="listitem"
               aria-label={`Experience: ${exp.title}, ${exp.company}, ${exp.date}`}
             >
-              <h3 className="text-xl md:text-2xl font-semibold text-[#ffe31a]">{exp.title}</h3>
+              <h3 className="text-xl md:text-2xl font-semibold text-[#3ca2fa]">{exp.title}</h3>
               <span className="text-sm text-white">{exp.company} • {exp.date}</span>
               <ul className="mt-4 space-y-2">
                 {exp.description.map((point, i) => (
                   <li key={i} className="flex items-start text-white opacity-90 hover:opacity-100 transition-opacity">
-                    <FaCheckCircle className="checkmark text-[#ffe31a] mr-2 mt-1 flex-shrink-0" />
+                    <FaCheckCircle className="checkmark text-[#3ca2fa] mr-2 mt-1 flex-shrink-0" />
                     <span>{point}</span>
                   </li>
                 ))}
@@ -117,14 +117,14 @@ export default function ExperienceSection() {
       className="snap-center flex-shrink-0 min-w-[85%] max-w-[90%] bg-gray-800/90 p-5 rounded-xl shadow-lg border border-gray-700/50 backdrop-blur-sm text-sm break-words"
       role="listitem"
     >
-      <h3 className="text-lg font-semibold text-[#ffe31a] mb-1">{exp.title}</h3>
+      <h3 className="text-lg font-semibold text-[#3ca2fa] mb-1">{exp.title}</h3>
       <span className="block text-white text-xs mb-2">
         {exp.company} • {exp.date}
       </span>
       <ul className="space-y-2">
         {exp.description.map((point, i) => (
           <li key={i} className="flex items-start text-white opacity-90 hover:opacity-100">
-            <FaCheckCircle className="checkmark text-[#ffe31a] mr-2 mt-1 flex-shrink-0" />
+            <FaCheckCircle className="checkmark text-[#3ca2fa] mr-2 mt-1 flex-shrink-0" />
             <span className="break-words">{point}</span>
           </li>
         ))}
@@ -137,7 +137,7 @@ export default function ExperienceSection() {
         {/* Carousel Controls for Small Devices */}
         <div className="lg:hidden flex justify-center mt-6 space-x-4">
           <button
-            className="px-4 py-2 bg-[#ffe31a] text-white rounded-full hover:bg-[#ffd700] transition"
+            className="px-4 py-2 bg-[#3ca2fa] text-white rounded-full hover:bg-[#3ca2fa]/80 transition"
             onClick={() => {
               carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' });
             }}
@@ -146,7 +146,7 @@ export default function ExperienceSection() {
             Previous
           </button>
           <button
-            className="px-4 py-2 bg-[#ffe31a] text-white rounded-full hover:bg-[#ffd700] transition"
+            className="px-4 py-2 bg-[#3ca2fa] text-white rounded-full hover:bg-[#3ca2fa]/80 transition"
             onClick={() => {
               carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
             }}

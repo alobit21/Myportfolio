@@ -29,23 +29,8 @@ const education = [
     date: "2020 - 2022",
     icon: <FaSchool className="text-[#3ca2fa] text-xl" />,
     description: "Completed Advanced Level Education with focus on Physics, Chemistry, and Mathematics (PCM)."
-  },
-  {
-    id: 3,
-    title: "Mkalala Secondary School",
-    type: "Ordinary Level",
-    date: "2016 - 2019",
-    icon: <FaSchool className="text-[#3ca2fa] text-xl" />,
-    description: "Completed Ordinary Level Education. Active participant in science and mathematics competitions."
-  },
-  {
-    id: 4,
-    title: "Ikwega Primary School",
-    type: "Primary Education",
-    date: "2007 - 2015",
-    icon: <FaGraduationCap className="text-[#3ca2fa] text-xl" />,
-    description: "Completed primary education with excellent academic performance. Developed strong foundation in core subjects."
   }
+ 
 ];
 
 const expertise = [
