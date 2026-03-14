@@ -75,16 +75,16 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#0F0F11]/10 relative h-fit rounded-3xl overflow-hidden m-8">
-      <div className="max-w-7xl mx-auto p-14 z-40 relative">
+    <footer className="  relative h-fit rounded-t-3xl overflow-hidden  ">
+      <div className="max-w-7xl mx-auto px-4 top-4 md:px-14 z-40 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8 lg:gap-16 pb-12">
           {/* Brand section */}
           <div className="flex flex-col space-y-4">
             <div className="flex items-center space-x-2">
-              <span className="text-[#3ca2fa] text-3xl font-extrabold">
+              <span className="text-[#3ca2fa] text-xl md:text-2xl lg:text-3xl font-extrabold">
                 &lt;/&gt;
               </span>
-              <span className="text-white text-3xl font-bold">Codewithmac</span>
+              <span className="text-white text-xl md:text-2xl lg:text-3xl font-bold">Codewithmac</span>
             </div>
             <p className="text-sm leading-relaxed text-gray-300">
               Full-stack developer passionate about creating amazing web experiences with modern technologies.
@@ -142,7 +142,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <hr className="border-t border-gray-700 my-8" />
+        <hr className="border-t border-gray-900 my-8" />
 
         {/* Footer bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center text-sm space-y-4 md:space-y-0">

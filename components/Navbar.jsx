@@ -33,7 +33,7 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between px-4 py-2 lg:py-4">
         <Link href="/">
         
-          <span className="text-[#3ca2fa] font-bold">CODEWITHMAC</span>
+          <span className="text-[#3ca2fa] font-bold text-lg md:text-xl lg:text-2xl">CODEWITHMAC</span>
         </Link>
         <div className="mobile-menu md:hidden">
           {!navbarOpen ? (

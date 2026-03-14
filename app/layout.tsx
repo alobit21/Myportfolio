@@ -74,7 +74,6 @@ export default function RootLayout({
         <ThemeWrapper>
           <Navbar />
           <main className="min-h-screen">{children}</main>
-          <div className="border-t border-gray-300 "></div>
           <Footer />
         </ThemeWrapper>
       </body>
