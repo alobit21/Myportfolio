@@ -15,6 +15,7 @@
     "@prisma/client": "^7.8.0",
     "@react-email/components": "0.0.28",
     "aos": "^2.3.4",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "daisyui": "^4.12.10",
@@ -38,6 +39,8 @@
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",
+    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
     "@types/react": "^18",

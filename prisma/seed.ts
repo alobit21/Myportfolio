@@ -2,8 +2,10 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
 import dotenv from 'dotenv'
+import bcrypt from 'bcryptjs'
 
 dotenv.config()
+
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 const adapter = new PrismaPg(pool)
@@ -17,6 +19,17 @@ async function main() {
   await prisma.skill.deleteMany()
   await prisma.technology.deleteMany()
   await prisma.profile.deleteMany()
+  await prisma.admin.deleteMany()
+
+  // Seed Admin
+  const hashedPassword = await bcrypt.hash('admin123', 10)
+  await prisma.admin.create({
+    data: {
+      username: 'admin',
+      password: hashedPassword
+    }
+  })
+
 
   // Seed Projects
   const projects = [

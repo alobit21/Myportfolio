@@ -78,3 +78,9 @@ model Profile {
   updatedAt    DateTime @updatedAt
 }
 
+model Admin {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
+}
+

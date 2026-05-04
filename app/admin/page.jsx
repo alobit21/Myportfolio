@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 
 export default function AdminDashboard() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginData, setLoginData] = useState({ username: '', password: '' });
+  
   const [activeTab, setActiveTab] = useState('projects');
   const [projects, setProjects] = useState([]);
   const [experiences, setExperiences] = useState([]);
@@ -30,8 +33,17 @@ export default function AdminDashboard() {
   });
 
   useEffect(() => {
-    fetchData();
-  }, [activeTab]);
+    const auth = localStorage.getItem('admin_auth');
+    if (auth === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchData();
+    }
+  }, [activeTab, isAuthenticated]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -45,6 +57,32 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginData)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setIsAuthenticated(true);
+        localStorage.setItem('admin_auth', 'true');
+        Swal.fire('Welcome', 'Login successful', 'success');
+      } else {
+        Swal.fire('Error', data.error || 'Login failed', 'error');
+      }
+    } catch (error) {
+      Swal.fire('Error', 'An error occurred during login', 'error');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('admin_auth');
   };
 
   const handleProjectSubmit = async (e) => {
@@ -91,10 +129,53 @@ export default function AdminDashboard() {
     }
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4 pt-24">
+        <div className="bg-gray-800 p-8 rounded-xl border border-gray-700 w-full max-w-md">
+          <h1 className="text-3xl font-bold text-yellow-400 mb-8 text-center">Admin Login</h1>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-2">Username</label>
+              <input 
+                type="text" 
+                className="w-full bg-gray-900 border border-gray-700 p-3 rounded-lg text-white" 
+                value={loginData.username} 
+                onChange={e => setLoginData({...loginData, username: e.target.value})} 
+                required 
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-2">Password</label>
+              <input 
+                type="password" 
+                className="w-full bg-gray-900 border border-gray-700 p-3 rounded-lg text-white" 
+                value={loginData.password} 
+                onChange={e => setLoginData({...loginData, password: e.target.value})} 
+                required 
+              />
+            </div>
+            <button type="submit" className="w-full bg-yellow-500 text-gray-900 font-bold py-3 rounded-lg hover:bg-yellow-600 transition">
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <div className="min-h-screen bg-gray-900 text-white p-8 pt-24">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-yellow-400 mb-8">Portfolio Admin Dashboard</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-yellow-400">Portfolio Admin Dashboard</h1>
+          <button 
+            onClick={handleLogout}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white font-semibold transition"
+          >
+            Logout
+          </button>
+        </div>
         
         <div className="flex space-x-4 mb-8">
           <button 
@@ -159,7 +240,6 @@ export default function AdminDashboard() {
                       <h3 className="font-bold">{item.title}</h3>
                       <p className="text-sm text-gray-400">{activeTab === 'projects' ? item.tags?.join(', ') : item.company}</p>
                     </div>
-                    {/* Add delete button later */}
                   </div>
                 ))}
               </div>
