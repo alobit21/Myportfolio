@@ -2,59 +2,137 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle, FaBriefcase, FaGraduationCap, FaCode, FaMapMarkerAlt, FaCalendar, FaExternalLinkAlt } from 'react-icons/fa';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const experiences = [
-  {
-    title: 'Final Year Project – AI Chatbot System',
-    company: 'University Capstone',
-    date: 'Sept 2023 – May 2024',
-    description: [
-      'Designed and developed an AI-powered chatbot for student inquiries using React and Node.js.',
-      'Integrated OpenAI API to simulate real-time answers.',
-      'Collaborated in a team of 3, handling frontend and backend integration.'
-    ]
-  },
-  {
-    title: 'Freelance Web Developer',
-    company: 'Self-Employed',
-    date: '2022 – Present',
-    description: [
-      'Built and deployed custom websites for small businesses and individuals using React, HTML/CSS, and Tailwind.',
-      'Created responsive designs optimized for mobile and desktop.',
-      'Used Git and GitHub for version control and deployment via Vercel.'
-    ]
-  },
-  {
-    title: 'Learning & Personal Projects',
-    company: 'Ongoing',
-    date: '2021 – Present',
-    description: [
-      'Built personal projects including portfolios, task managers, and blog templates.',
-      'Learning modern tech stacks like React, Next.js, Tailwind CSS, Firebase, and Git.',
-      'Actively improving problem-solving skills through LeetCode and building in public on GitHub.'
-    ]
-  }
-];
-
 export default function ExperienceSection() {
+  const [experiences, setExperiences] = React.useState({ professional: [], academic: [], technical: [] });
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchExperiences = async () => {
+      try {
+        const response = await fetch('/api/experience');
+        const data = await response.json();
+        
+        // Group data by type
+        const grouped = {
+          professional: data.filter(e => e.type === 'Freelance' || e.type === 'Professional'),
+          academic: data.filter(e => e.type === 'Academic'),
+          technical: data.filter(e => e.type === 'Skills Development' || e.type === 'Technical')
+        };
+        setExperiences(grouped);
+      } catch (error) {
+        console.error('Error fetching experiences:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchExperiences();
+  }, []);
+
   const canvasRef = useRef(null);
   const cardRefs = useRef([]);
   const sphereRefs = useRef([]);
   const cursorRef = useRef(null);
   const carouselRef = useRef(null);
 
-  // Placeholder for custom effects: GSAP Timeline, SVG shapes, or Three.js enhancements
-  // Example customization:
-  // - Use clip-path: polygon(...) for hexagonal cards
-  // - Add <svg> blobs inside cards with animated shapes
-  // - Wrap each card in <motion.div> for Timeline animation
-  // - Replace canvasRef rendering with 3D cards from Three.js scene
+  // Shadcn-style Card Component
+  const ExperienceCard = ({ exp, category }) => {
+    const getCategoryIcon = () => {
+      switch (category) {
+        case 'professional': return <FaBriefcase className="w-5 h-5 text-blue-400" />;
+        case 'academic': return <FaGraduationCap className="w-5 h-5 text-green-400" />;
+        case 'technical': return <FaCode className="w-5 h-5 text-purple-400" />;
+        default: return <FaBriefcase className="w-5 h-5 text-blue-400" />;
+      }
+    };
 
-  // The JSX structure remains similar to what you provided
-  // The key change is responsiveness fix via tailwind and better layout control below
+    const getCategoryColor = () => {
+      switch (category) {
+        case 'professional': return 'border-blue-500/20 hover:border-blue-500/40';
+        case 'academic': return 'border-green-500/20 hover:border-green-500/40';
+        case 'technical': return 'border-purple-500/20 hover:border-purple-500/40';
+        default: return 'border-blue-500/20 hover:border-blue-500/40';
+      }
+    };
+
+    return (
+      <div className={`group relative bg-gray-900/50 backdrop-blur-sm rounded-xl border ${getCategoryColor()} p-6 transition-all duration-300 hover:shadow-lg hover:shadow-[#ffe31a]/10 hover:-translate-y-1`}>
+        {/* Card Header */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-gray-800/50 rounded-lg border border-gray-700/50">
+              {getCategoryIcon()}
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-white group-hover:text-[#ffe31a] transition-colors">
+                {exp.title}
+              </h3>
+              <p className="text-gray-400 text-sm font-medium">{exp.company}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Meta Info */}
+        <div className="flex items-center justify-between mb-4 text-xs text-gray-500">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-1">
+              <FaMapMarkerAlt className="w-3 h-3" />
+              <span>{exp.location}</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <FaCalendar className="w-3 h-3" />
+              <span>{exp.date}</span>
+            </div>
+          </div>
+          <span className="px-2 py-1 bg-gray-800/50 rounded-full text-xs text-gray-400">
+            {exp.type}
+          </span>
+        </div>
+
+        {/* Achievements */}
+        <div className="mb-4">
+          <div className="flex flex-wrap gap-1">
+            {exp.achievements.map((achievement, i) => (
+              <span key={i} className="px-2 py-1 bg-[#ffe31a]/10 text-[#ffe31a] text-xs rounded-full border border-[#ffe31a]/20">
+                {achievement}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Description */}
+        <div className="mb-4">
+          <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Key Responsibilities</h4>
+          <ul className="space-y-2">
+            {exp.description.map((point, i) => (
+              <li key={i} className="flex items-start text-gray-300 text-sm">
+                <FaCheckCircle className="text-[#ffe31a] mr-2 mt-0.5 flex-shrink-0 w-3 h-3" />
+                <span className="leading-relaxed">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Technologies */}
+        <div className="border-t border-gray-800/50 pt-4">
+          <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Technologies</h4>
+          <div className="flex flex-wrap gap-1">
+            {exp.technologies.map((tech, i) => (
+              <span key={i} className="px-2 py-1 bg-gray-800/50 text-gray-300 text-xs rounded border border-gray-700/50 hover:border-[#ffe31a]/30 hover:text-[#ffe31a] transition-colors">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Hover Effect Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#ffe31a]/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      </div>
+    );
+  };
 
   return (
     <section className="relative py-16 bg-gray-900 text-white overflow-hidden font-sans min-h-screen" 
@@ -75,6 +153,7 @@ export default function ExperienceSection() {
         className="fixed w-6 h-6 bg-[#3ca2fa] rounded-full pointer-events-none mix-blend-screen opacity-50 z-50"
       />
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+<<<<<<< HEAD
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#3ca2fa] to-[#3ca2fa]/80 drop-shadow-md">
           Experience
         </h2>
@@ -99,10 +178,37 @@ export default function ExperienceSection() {
                   </li>
                 ))}
               </ul>
+=======
+        <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#ffe31a] to-[#ffd700] drop-shadow-md">
+          Professional Experience
+        </h2>
+
+        {/* All Experience Cards in Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          {/* Professional Experience Card */}
+          {experiences.professional.map((exp, idx) => (
+            <div key={idx} ref={(el) => (cardRefs.current[idx] = el)}>
+              <ExperienceCard exp={exp} category="professional" />
+            </div>
+          ))}
+          
+          {/* Academic Project Card */}
+          {experiences.academic.map((exp, idx) => (
+            <div key={idx} ref={(el) => (cardRefs.current[idx + experiences.professional.length] = el)}>
+              <ExperienceCard exp={exp} category="academic" />
+            </div>
+          ))}
+          
+          {/* Technical Skills Card */}
+          {experiences.technical.map((exp, idx) => (
+            <div key={idx} ref={(el) => (cardRefs.current[idx + experiences.professional.length + experiences.academic.length] = el)}>
+              <ExperienceCard exp={exp} category="technical" />
+>>>>>>> 3603f10 (added backend part)
             </div>
           ))}
         </div>
 
+<<<<<<< HEAD
        {/* Carousel for small devices only */}
 <div
   className="lg:hidden flex overflow-x-auto space-x-4 px-4 py-2 scroll-smooth snap-x snap-mandatory"
@@ -154,6 +260,25 @@ export default function ExperienceSection() {
           >
             Next
           </button>
+=======
+        {/* Category Summary Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+          <div className="text-center p-6 bg-blue-500/10 rounded-xl border border-blue-500/20">
+            <FaBriefcase className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+            <h3 className="text-lg font-semibold text-blue-400 mb-2">Professional</h3>
+            <p className="text-gray-400 text-sm">Real-world freelance projects and client work</p>
+          </div>
+          <div className="text-center p-6 bg-green-500/10 rounded-xl border border-green-500/20">
+            <FaGraduationCap className="w-8 h-8 text-green-400 mx-auto mb-3" />
+            <h3 className="text-lg font-semibold text-green-400 mb-2">Academic</h3>
+            <p className="text-gray-400 text-sm">University projects and research work</p>
+          </div>
+          <div className="text-center p-6 bg-purple-500/10 rounded-xl border border-purple-500/20">
+            <FaCode className="w-8 h-8 text-purple-400 mx-auto mb-3" />
+            <h3 className="text-lg font-semibold text-purple-400 mb-2">Technical</h3>
+            <p className="text-gray-400 text-sm">Continuous learning and skill development</p>
+          </div>
+>>>>>>> 3603f10 (added backend part)
         </div>
       </div>
     </section>

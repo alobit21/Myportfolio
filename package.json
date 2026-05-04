@@ -11,17 +11,21 @@
   "dependencies": {
     "@formspree/react": "^2.5.1",
     "@heroicons/react": "^2.1.5",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "@react-email/components": "0.0.28",
     "aos": "^2.3.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "daisyui": "^4.12.10",
+    "dotenv": "^17.4.2",
     "framer-motion": "^11.18.2",
     "gsap": "^3.13.0",
     "lucide-react": "^0.424.0",
     "motion": "^12.36.0",
     "next": "14.2.5",
     "next-themes": "^0.4.6",
+    "pg": "^8.20.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-icons": "^5.5.0",
@@ -35,13 +39,16 @@
   "devDependencies": {
     "@types/aos": "^3.0.7",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
+    "prisma": "^7.8.0",
     "react-email": "3.0.2",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

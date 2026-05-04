@@ -1,63 +1,9 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-const projectsData = [
-  {
-    id: 1,
-    title: "Expenses Tracking System",
-    description: "The Expense Tracker System is a full-stack web application built with React and NestJS, designed to help users efficiently record, categorize, and analyze their personal expenses. It features a responsive user interface, secure JWT-based authentication, and data visualization for insightful financial tracking. The system is fully containerized with Docker and integrated with a CI/CD pipeline for automated builds and deployments to AWS, ensuring scalability, reliability, and smooth continuous delivery in a modern cloud environment.",
-     image: "/images/projects/expenses.png",
-    tag: ["All", "Web"],
-    gitUrl: "/",
-    previewUrl: "https://expenses.seranise.co.tz/",
-  },
-  {
-    id: 2,
-    title: "Django Tourism Site",
-    description: "A dynamic tourism platform for Zanzibar, built with Django. Users can explore destinations, book safaris, and access tour information with a responsive interface.",
-    image: "/images/projects/goz2.png",
-    tag: ["All", "Web"],
-    gitUrl: "/",
-    previewUrl: "https://www.gatesofzanzibarsafaris.com/",
-  },
-  {
-    id: 3,
-    title: "Next.js Portfolio",
-    description: "A personal portfolio built with Next.js, showcasing projects and skills with a responsive design, optimized for performance and SEO.",
-    image: "/images/projects/nextjsportifolio.png",
-    tag: ["All", "Web"],
-    gitUrl: "/",
-    previewUrl: "/",
-  },
-  {
-    id: 4,
-    title: "Blog Application",
-    description: "The Blog Application is a modern, full-stack platform built with Next.js and PostgreSQL, allowing users to create, edit, and share blog posts with a clean and responsive interface. It features dynamic routing, SEO optimization, and a secure backend for managing posts and user data efficiently. Deployed on Vercel for high performance and scalability, the application delivers a seamless publishing experience with fast load times, server-side rendering, and automatic deployment from version control.",
-     image: "/images/projects/blog.png",
-    tag: ["All", "Web"],
-    gitUrl: "/",
-    previewUrl: "https://macblog.tarxemo.com/",
-  },
-  {
-    id: 7,
-    title: "Django-React Jwt Application",
-    description: "A full-stack app with Django and React for note management and QR code generation, featuring a modern and dynamic interface.",
-    image: "/images/projects/djreact.png",
-    tag: ["All", "Web"],
-    gitUrl: "/",
-    previewUrl: "https://github.com/alobit21/Django-React-Jwt",
-  },
-  {
-    id: 8,
-    title: "Mobile Application",
-    description: "A cross-platform mobile app built with React Native or Flutter, optimized for iOS and Android with a seamless user experience.",
-    image: "/images/projects/mobile-project-1.jpg",
-    tag: ["All", "Mobile"],
-    gitUrl: "/",
-    previewUrl: "/",
-  },
-];
+// Data will be fetched from API
+
 
 // ProjectTag Component
 const ProjectTag = ({ name, onClick, isSelected }) => {
@@ -113,12 +59,31 @@ const ProjectCard = ({ title, description, imgUrl, gitUrl, previewUrl }) => {
 
 const ProjectsSection = () => {
   const [tag, setTag] = useState('All');
+  const [projectsData, setProjectsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('/api/projects');
+        const data = await response.json();
+        setProjectsData(data);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      } finally {
+        setLoading(true); // Keeping it simple for now, but usually false
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const handleTagChange = (newTag) => {
     setTag(newTag);
   };
 
-  const filteredProjects = projectsData.filter((project) => project.tag.includes(tag));
+  const filteredProjects = projectsData.filter((project) => project.tag?.includes(tag) || project.tags?.includes(tag));
 
   return (
     <section id="projects" className="relative py-12 text-white overflow-hidden" 

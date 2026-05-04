@@ -19,8 +19,13 @@ const education = [
     title: "University of Dodoma",
     type: "University",
     date: "2022 - Present",
+<<<<<<< HEAD
     icon: <FaUniversity className="text-[#3ca2fa] text-xl" />,
     description: "Pursuing a degree in Computer Science. Actively participating in coding competitions and open source projects."
+=======
+    icon: <FaUniversity className="text-yellow-400 text-xl" />,
+    description: "Pursuing a degree in Software Engineering. Actively participating in coding competitions and open source projects."
+>>>>>>> 3603f10 (added backend part)
   },
   {
     id: 2,
