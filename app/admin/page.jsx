@@ -50,6 +50,7 @@ export default function AdminDashboard() {
     title: '',
     description: '',
     image: '',
+    images: [],
     tags: '',
     gitUrl: '',
     previewUrl: ''
@@ -140,40 +141,51 @@ export default function AdminDashboard() {
     localStorage.removeItem('admin_auth');
   };
 
-  // Image Upload Handler
-  const handleImageUpload = async (e, formType) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // Image Upload Handler - supports multiple images
+  const handleImageUpload = async (e, formType, isMainImage = false) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
 
     setUploadingImage(true);
+    const uploadedUrls = [];
+
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('folder', formType === 'project' ? 'portfolio/projects' : 'portfolio/experience');
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', formType === 'project' ? 'portfolio/projects' : 'portfolio/experience');
 
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        if (formType === 'project') {
-          setProjectForm(prev => ({ ...prev, image: data.url }));
-        }
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'success',
-          title: 'Image uploaded!',
-          showConfirmButton: false,
-          timer: 2000,
-          background: '#1f2937',
-          color: '#fff'
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
         });
-      } else {
-        throw new Error(data.error);
+
+        const data = await res.json();
+        if (res.ok) {
+          uploadedUrls.push(data.url);
+        } else {
+          throw new Error(data.error);
+        }
       }
+
+      if (formType === 'project') {
+        if (isMainImage) {
+          setProjectForm(prev => ({ ...prev, image: uploadedUrls[0] }));
+        } else {
+          setProjectForm(prev => ({ ...prev, images: [...prev.images, ...uploadedUrls] }));
+        }
+      }
+
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: `${uploadedUrls.length} image(s) uploaded!`,
+        showConfirmButton: false,
+        timer: 2000,
+        background: '#1f2937',
+        color: '#fff'
+      });
     } catch (error) {
       Swal.fire({
         title: 'Upload Failed',
@@ -188,6 +200,14 @@ export default function AdminDashboard() {
     }
   };
 
+  // Remove image from images array
+  const handleRemoveImage = (index) => {
+    setProjectForm(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
+  };
+
   // Project CRUD
   const handleProjectSubmit = async (e) => {
     e.preventDefault();
@@ -195,7 +215,8 @@ export default function AdminDashboard() {
       const method = modalMode === 'edit' ? 'PUT' : 'POST';
       const body = {
         ...projectForm,
-        tags: projectForm.tags.split(',').map(t => t.trim())
+        tags: projectForm.tags.split(',').map(t => t.trim()),
+        images: projectForm.images || []
       };
       if (modalMode === 'edit') body.id = editingItem.id;
 
@@ -278,6 +299,7 @@ export default function AdminDashboard() {
       title: project.title,
       description: project.description,
       image: project.image,
+      images: project.images || [],
       tags: project.tags?.join(', ') || '',
       gitUrl: project.gitUrl || '',
       previewUrl: project.previewUrl || ''
@@ -391,7 +413,7 @@ export default function AdminDashboard() {
   const openCreateModal = () => {
     setModalMode('create');
     setEditingItem(null);
-    setProjectForm({ title: '', description: '', image: '', tags: '', gitUrl: '', previewUrl: '' });
+    setProjectForm({ title: '', description: '', image: '', images: [], tags: '', gitUrl: '', previewUrl: '' });
     setExpForm({ title: '', company: '', location: '', date: '', type: 'Professional', description: '', technologies: '', achievements: '' });
     setShowModal(true);
   };
@@ -523,6 +545,12 @@ export default function AdminDashboard() {
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
+                {project.images && project.images.length > 0 && (
+                  <div className="absolute top-2 left-2 bg-gray-900/80 px-2 py-1 rounded text-xs text-white flex items-center gap-1">
+                    <ImageIcon className="w-3 h-3" />
+                    {project.images.length + 1} photos
+                  </div>
+                )}
                 <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
                     onClick={() => handleEditProject(project)}
@@ -539,7 +567,15 @@ export default function AdminDashboard() {
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-white truncate">{project.title}</h3>
+                <div className="flex justify-between items-start">
+                  <h3 className="font-semibold text-white truncate">{project.title}</h3>
+                  {project.images && project.images.length > 0 && (
+                    <span className="text-xs bg-[#3ca2fa]/20 text-[#3ca2fa] px-2 py-1 rounded flex items-center gap-1">
+                      <ImageIcon className="w-3 h-3" />
+                      {project.images.length + 1}
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm text-gray-400 mt-1 line-clamp-2">{project.description}</p>
                 <div className="flex flex-wrap gap-1 mt-3">
                   {project.tags?.slice(0, 3).map((tag, i) => (
@@ -640,14 +676,11 @@ export default function AdminDashboard() {
     </div>
   );
 
-  // Modal Component
-  const Modal = () => {
-    if (!showModal) return null;
-
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal} />
-        <div className="relative bg-gray-800 rounded-xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+  // Modal JSX - rendered inline to prevent remounting
+  const ModalContent = showModal && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal} />
+      <div className="relative bg-gray-800 rounded-xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
           <div className="sticky top-0 bg-gray-800 p-4 border-b border-gray-700 flex justify-between items-center">
             <h2 className="text-xl font-bold text-[#3ca2fa]">
               {modalMode === 'edit' ? 'Edit' : 'Add New'} {activeTab === 'projects' ? 'Project' : 'Experience'}
@@ -682,7 +715,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">Project Image</label>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Main Project Image</label>
                   <div className="flex items-center gap-4">
                     {projectForm.image && (
                       <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-700">
@@ -691,8 +724,37 @@ export default function AdminDashboard() {
                     )}
                     <label className={`flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg cursor-pointer transition ${uploadingImage ? 'opacity-50' : ''}`}>
                       <Upload className="w-4 h-4 text-[#3ca2fa]" />
-                      <span className="text-sm">{uploadingImage ? 'Uploading...' : 'Upload Image'}</span>
-                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, 'project')} disabled={uploadingImage} />
+                      <span className="text-sm">{uploadingImage ? 'Uploading...' : 'Upload Main Image'}</span>
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, 'project', true)} disabled={uploadingImage} />
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Additional Screenshots ({projectForm.images.length})</label>
+                  <div className="space-y-3">
+                    {projectForm.images.length > 0 && (
+                      <div className="grid grid-cols-4 gap-2">
+                        {projectForm.images.map((img, index) => (
+                          <div key={index} className="relative group">
+                            <div className="w-full h-20 rounded-lg overflow-hidden bg-gray-700">
+                              <Image src={img} alt={`Screenshot ${index + 1}`} width={80} height={80} className="w-full h-full object-cover" />
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveImage(index)}
+                              className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <label className={`flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg cursor-pointer transition ${uploadingImage ? 'opacity-50' : ''}`}>
+                      <Upload className="w-4 h-4 text-[#3ca2fa]" />
+                      <span className="text-sm">{uploadingImage ? 'Uploading...' : 'Add Screenshots'}</span>
+                      <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleImageUpload(e, 'project', false)} disabled={uploadingImage} />
                     </label>
                   </div>
                 </div>
@@ -860,8 +922,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
-    );
-  };
+  );
 
   // Placeholder for other tabs
   const PlaceholderContent = ({ title }) => (
@@ -989,7 +1050,7 @@ export default function AdminDashboard() {
       </main>
 
       {/* Modal */}
-      <Modal />
+      {ModalContent}
     </div>
   );
 }

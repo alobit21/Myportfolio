@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Data will be fetched from API
 
@@ -21,19 +22,68 @@ const ProjectTag = ({ name, onClick, isSelected }) => {
   );
 };
 
-// ProjectCard Component
-const ProjectCard = ({ title, description, imgUrl, gitUrl, previewUrl }) => {
+// ProjectCard Component with Image Gallery
+const ProjectCard = ({ title, description, imgUrl, images = [], gitUrl, previewUrl }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const allImages = [imgUrl, ...(images || [])].filter(Boolean);
+  const hasMultipleImages = allImages.length > 1;
+
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+  };
+
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+  };
+
   return (
     <div className="bg-gray-900/90 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-1 flex flex-col h-full backdrop-blur-sm border border-gray-700/50">
-      <div className="relative w-full h-48 overflow-hidden">
+      <div className="relative w-full h-48 overflow-hidden group">
         <Image
-          src={imgUrl}
-          alt={title}
-          layout="fill"
-          objectFit="cover"
-          className="transition-transform duration-700 ease-in-out hover:scale-110"
+          src={allImages[currentImageIndex] || imgUrl}
+          alt={`${title} - Screenshot ${currentImageIndex + 1}`}
+          fill
+          className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+
+        {/* Image Navigation Arrows */}
+        {hasMultipleImages && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-900/70 hover:bg-[#3ca2fa] text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-900/70 hover:bg-[#3ca2fa] text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            {/* Image Counter */}
+            <div className="absolute bottom-2 right-2 bg-gray-900/70 px-2 py-1 rounded text-xs text-white">
+              {currentImageIndex + 1} / {allImages.length}
+            </div>
+
+            {/* Image Dots */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+              {allImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    idx === currentImageIndex ? 'bg-[#3ca2fa] w-4' : 'bg-white/50 hover:bg-white'
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <div className="p-4 flex flex-col flex-grow">
         <h3 className="text-xl font-semibold text-[#3ca2fa] mb-2 transition-colors duration-300">{title}</h3>
@@ -121,6 +171,7 @@ const ProjectsSection = () => {
                   title={project.title}
                   description={project.description}
                   imgUrl={project.image}
+                  images={project.images}
                   gitUrl={project.gitUrl}
                   previewUrl={project.previewUrl}
                 />

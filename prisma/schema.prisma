@@ -16,6 +16,7 @@ model Project {
   title       String
   description String
   image       String
+  images      String[]
   tags        String[]
   gitUrl      String
   previewUrl  String
