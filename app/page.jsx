@@ -12,7 +12,6 @@ export default function Home(){
     
 <div className="container mx-auto px-4 md:px-12 py-4 mt-6  ">
     <HeroSection/>
-<<<<<<< HEAD
     
     <AboutSection/>
   
@@ -23,13 +22,6 @@ export default function Home(){
     
     <ProjectSection/>
   
-=======
-    <AboutSection/>
-    <TechnologiesStackSection/>
-    <ExperienceSection />   
-
-    <ProjectSection/>
->>>>>>> 3603f10 (added backend part)
     <EmailSection/>
 
 </div>

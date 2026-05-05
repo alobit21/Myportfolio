@@ -8,12 +8,10 @@ export async function GET() {
         createdAt: 'desc',
       },
     })
-    
-    // Group them like the hardcoded structure if needed, 
-    // or just return all and let the frontend filter.
-    // For now, let's return all.
+
     return NextResponse.json(experiences)
   } catch (error) {
+    console.error('Experience GET error:', error)
     return NextResponse.json({ error: 'Failed to fetch experiences' }, { status: 500 })
   }
 }
@@ -26,6 +24,46 @@ export async function POST(request: Request) {
     })
     return NextResponse.json(experience)
   } catch (error) {
+    console.error('Experience POST error:', error)
     return NextResponse.json({ error: 'Failed to create experience' }, { status: 500 })
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json()
+    const { id, ...data } = body
+
+    if (!id) {
+      return NextResponse.json({ error: 'Experience ID is required' }, { status: 400 })
+    }
+
+    const experience = await prisma.experience.update({
+      where: { id },
+      data,
+    })
+    return NextResponse.json(experience)
+  } catch (error) {
+    console.error('Experience PUT error:', error)
+    return NextResponse.json({ error: 'Failed to update experience' }, { status: 500 })
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+
+    if (!id) {
+      return NextResponse.json({ error: 'Experience ID is required' }, { status: 400 })
+    }
+
+    await prisma.experience.delete({
+      where: { id },
+    })
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Experience DELETE error:', error)
+    return NextResponse.json({ error: 'Failed to delete experience' }, { status: 500 })
   }
 }

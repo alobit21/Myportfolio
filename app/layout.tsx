@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { ThemeProvider } from "next-themes";
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import AOS styles
@@ -24,6 +25,8 @@ const metadata: Metadata = {
 // Create a client component that wraps the app with ThemeProvider
 function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  const isAdminPage = pathname?.startsWith('/admin');
 
   // Prevent hydration mismatch by only rendering the theme after mounting
   useEffect(() => {
@@ -33,7 +36,9 @@ function ThemeWrapper({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
       <div className={`${inter.className} min-h-screen bg-gray-900 text-gray-100 ${mounted ? 'transition-colors duration-200' : ''}`}>
-        {children}
+        {!isAdminPage && <Navbar />}
+        <main className={`min-h-screen ${!isAdminPage ? 'pt-16' : ''}`}>{children}</main>
+        {!isAdminPage && <Footer />}
       </div>
     </ThemeProvider>
   );
@@ -72,9 +77,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeWrapper>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          {children}
         </ThemeWrapper>
       </body>
     </html>
