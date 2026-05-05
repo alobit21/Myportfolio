@@ -22,25 +22,41 @@ const ProjectTag = ({ name, onClick, isSelected }) => {
   );
 };
 
-// ProjectCard Component with Image Gallery
+// ProjectCard Component with Image Gallery and Autoplay
 const ProjectCard = ({ title, description, imgUrl, images = [], gitUrl, previewUrl }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const allImages = [imgUrl, ...(images || [])].filter(Boolean);
   const hasMultipleImages = allImages.length > 1;
 
+  // Autoplay effect
+  useEffect(() => {
+    if (!hasMultipleImages || isPaused) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [hasMultipleImages, isPaused, allImages.length]);
+
   const nextImage = (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
   };
 
   const prevImage = (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
   return (
     <div className="bg-gray-900/90 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-1 flex flex-col h-full backdrop-blur-sm border border-gray-700/50">
-      <div className="relative w-full h-48 overflow-hidden group">
+      <div
+        className="relative w-full h-48 overflow-hidden group"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
         <Image
           src={allImages[currentImageIndex] || imgUrl}
           alt={`${title} - Screenshot ${currentImageIndex + 1}`}
@@ -48,6 +64,13 @@ const ProjectCard = ({ title, description, imgUrl, images = [], gitUrl, previewU
           className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+
+        {/* Autoplay Indicator */}
+        {hasMultipleImages && (
+          <div className="absolute top-2 right-2 bg-gray-900/70 px-2 py-1 rounded text-xs text-white flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            {isPaused ? '⏸️' : '▶️'}
+          </div>
+        )}
 
         {/* Image Navigation Arrows */}
         {hasMultipleImages && (

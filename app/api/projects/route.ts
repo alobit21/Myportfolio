@@ -31,11 +31,24 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json()
-    const { id, ...data } = body
+    const { id, ...rawData } = body
 
     if (!id) {
       return NextResponse.json({ error: 'Project ID is required' }, { status: 400 })
     }
+
+    // Only allow valid Prisma fields
+    const data = {
+      title: rawData.title,
+      description: rawData.description,
+      image: rawData.image,
+      images: rawData.images || [],
+      tags: rawData.tags || [],
+      gitUrl: rawData.gitUrl,
+      previewUrl: rawData.previewUrl,
+    }
+
+    console.log('Updating project:', id, data)
 
     const project = await prisma.project.update({
       where: { id },
@@ -44,7 +57,7 @@ export async function PUT(request: Request) {
     return NextResponse.json(project)
   } catch (error) {
     console.error('Projects PUT error:', error)
-    return NextResponse.json({ error: 'Failed to update project' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to update project', details: String(error) }, { status: 500 })
   }
 }
 

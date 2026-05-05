@@ -235,16 +235,19 @@ export default function AdminDashboard() {
           background: '#1f2937',
           color: '#fff'
         });
-        setProjectForm({ title: '', description: '', image: '', tags: '', gitUrl: '', previewUrl: '' });
+        setProjectForm({ title: '', description: '', image: '', images: [], tags: '', gitUrl: '', previewUrl: '' });
         setShowModal(false);
         setModalMode('create');
         setEditingItem(null);
         fetchData();
+      } else {
+        const errorData = await res.json();
+        throw new Error(errorData.details || errorData.error || 'Failed to save project');
       }
     } catch (error) {
       Swal.fire({
         title: 'Error',
-        text: 'Failed to save project',
+        text: error.message || 'Failed to save project',
         icon: 'error',
         confirmButtonColor: '#ef4444',
         background: '#1f2937',
