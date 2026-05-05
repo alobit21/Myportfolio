@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const metadata: Metadata = {
-  title: "CodeMac",
-  description: "Personal portfolio of CodeMac - Web Developer",
+export const metadata: Metadata = {
+  title: "Admin - CodeMac",
+  description: "Admin panel for CodeMac portfolio",
 };
 
-export default function RootLayout({
+export default function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -22,9 +20,7 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <div className="min-h-screen bg-gray-900 text-gray-100">
-            <Navbar />
-            <main className="min-h-screen pt-16">{children}</main>
-            <Footer />
+            {children}
           </div>
         </ThemeProvider>
       </body>
