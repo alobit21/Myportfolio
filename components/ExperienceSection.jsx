@@ -15,6 +15,7 @@ export default function ExperienceSection() {
       try {
         const response = await fetch('/api/experience');
         const data = await response.json();
+        console.log('Frontend: Received experiences:', data.length, data);
         setExperiences(data);
       } catch (error) {
         console.error('Error fetching experiences:', error);
@@ -30,21 +31,26 @@ export default function ExperienceSection() {
   const cursorRef = useRef(null);
   const carouselRef = useRef(null);
 
+  // Ensure cardRefs array is properly sized
+  useEffect(() => {
+    cardRefs.current = cardRefs.current.slice(0, experiences.length);
+  }, [experiences]);
+
   useEffect(() => {
     if (loading || experiences.length === 0) return;
 
-    // Initialize animations
-    gsap.from(cardRefs.current, {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '#experience-section',
-        start: 'top 80%',
-      }
-    });
+    // Initialize animations - TEMPORARILY DISABLED FOR DEBUG
+    // gsap.from(cardRefs.current.filter(Boolean), {
+    //   y: 50,
+    //   opacity: 0,
+    //   duration: 0.8,
+    //   stagger: 0.2,
+    //   ease: 'power3.out',
+    //   scrollTrigger: {
+    //     trigger: '#experience-section',
+    //     start: 'top 80%',
+    //   }
+    // });
   }, [loading, experiences]);
 
   if (loading) return <div className="py-20 text-center text-white">Loading Experiences...</div>;
@@ -60,9 +66,9 @@ export default function ExperienceSection() {
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#3ca2fa] to-[#3ca2fa]/80 drop-shadow-md">
           Experience
         </h2>
-
+       
         {/* Large Devices Grid Layout */}
-        <div className="hidden lg:grid grid-cols-2 gap-6" role="list" aria-label="Work and project experience">
+        <div className="hidden lg:grid grid-cols-2 gap-6 auto-rows-min" role="list" aria-label="Work and project experience">
           {experiences.map((exp, idx) => (
             <div
               key={exp.id || idx}

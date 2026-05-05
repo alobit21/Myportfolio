@@ -9,6 +9,7 @@ export async function GET() {
       },
     })
 
+    console.log(`API: Found ${experiences.length} experiences`)
     return NextResponse.json(experiences)
   } catch (error) {
     console.error('Experience GET error:', error)
