@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FaCheckCircle, FaBriefcase, FaGraduationCap, FaCode, FaMapMarkerAlt, FaCalendar } from 'react-icons/fa';
+import { FaCheckCircle, FaMapMarkerAlt } from 'react-icons/fa';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,7 +31,6 @@ export default function ExperienceSection() {
   const cursorRef = useRef(null);
   const carouselRef = useRef(null);
 
-  // Ensure cardRefs array is properly sized
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, experiences.length);
   }, [experiences]);
@@ -39,18 +38,28 @@ export default function ExperienceSection() {
   useEffect(() => {
     if (loading || experiences.length === 0) return;
 
-    // Initialize animations
-    gsap.from(cardRefs.current.filter(Boolean), {
-      y: 50,
-      opacity: 0,
+    const cards = cardRefs.current.filter(Boolean);
+
+    // Set initial state explicitly
+    gsap.set(cards, { opacity: 0, y: 50 });
+
+    const anim = gsap.to(cards, {
+      y: 0,
+      opacity: 1,
       duration: 0.8,
       stagger: 0.2,
       ease: 'power3.out',
+      clearProps: 'all', // clears inline styles after animation so CSS takes over
       scrollTrigger: {
         trigger: '#experience-section',
         start: 'top 80%',
-      }
+      },
     });
+
+    return () => {
+      anim.kill();
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
   }, [loading, experiences]);
 
   if (loading) return <div className="py-20 text-center text-white">Loading Experiences...</div>;
@@ -66,13 +75,14 @@ export default function ExperienceSection() {
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#3ca2fa] to-[#3ca2fa]/80 drop-shadow-md">
           Experience
         </h2>
-       
-        {/* Large Devices Grid Layout */}
-        <div className="hidden lg:grid grid-cols-2 gap-6 auto-rows-min" role="list" aria-label="Work and project experience">
+
+        {/* Medium+ Devices Grid Layout */}
+        <div className="hidden md:grid grid-cols-2 gap-6 auto-rows-min" role="list" aria-label="Work and project experience">
           {experiences.map((exp, idx) => (
             <div
               key={exp.id || idx}
               ref={(el) => (cardRefs.current[idx] = el)}
+              style={{ opacity: 1 }} // fallback so cards are never invisible without JS
               className="relative bg-gray-800/80 p-6 rounded-xl shadow-lg hover:shadow-[#3ca2fa]/50 transition-all duration-300 border border-gray-700/50 backdrop-blur-sm"
               role="listitem"
             >
@@ -83,7 +93,7 @@ export default function ExperienceSection() {
                 </div>
                 <span className="text-sm text-gray-400">{exp.date}</span>
               </div>
-              
+
               <div className="flex items-center space-x-2 text-xs text-gray-500 mb-4">
                 <FaMapMarkerAlt className="text-[#3ca2fa]" />
                 <span>{exp.location}</span>
@@ -112,9 +122,9 @@ export default function ExperienceSection() {
           ))}
         </div>
 
-        {/* Carousel for small devices only */}
+        {/* Carousel for small devices only (below md) */}
         <div
-          className="lg:hidden flex overflow-x-auto space-x-4 px-4 py-2 scroll-smooth snap-x snap-mandatory"
+          className="md:hidden flex overflow-x-auto space-x-4 px-4 py-2 scroll-smooth snap-x snap-mandatory"
           ref={carouselRef}
           role="list"
           aria-label="Experience carousel"
@@ -128,7 +138,7 @@ export default function ExperienceSection() {
               <h3 className="text-lg font-semibold text-[#3ca2fa] mb-1">{exp.title}</h3>
               <p className="text-white text-xs mb-1">{exp.company}</p>
               <span className="block text-gray-400 text-[10px] mb-3">{exp.date}</span>
-              
+
               <ul className="space-y-2">
                 {exp.description.map((point, i) => (
                   <li key={i} className="flex items-start text-white opacity-90">
@@ -142,20 +152,16 @@ export default function ExperienceSection() {
         </div>
 
         {/* Carousel Controls for Small Devices */}
-        <div className="lg:hidden flex justify-center mt-6 space-x-4">
+        <div className="md:hidden flex justify-center mt-6 space-x-4">
           <button
             className="px-4 py-2 bg-[#3ca2fa] text-white rounded-full hover:bg-[#3ca2fa]/80 transition"
-            onClick={() => {
-              carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' });
-            }}
+            onClick={() => carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' })}
           >
             Prev
           </button>
           <button
             className="px-4 py-2 bg-[#3ca2fa] text-white rounded-full hover:bg-[#3ca2fa]/80 transition"
-            onClick={() => {
-              carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' });
-            }}
+            onClick={() => carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' })}
           >
             Next
           </button>
