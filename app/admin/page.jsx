@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import Image from 'next/image';
 import {
@@ -74,13 +74,7 @@ export default function AdminDashboard() {
     }
   }, []);
 
-  useEffect(() => {
-    if (isAuthenticated && (activeTab === 'projects' || activeTab === 'experience')) {
-      fetchData();
-    }
-  }, [activeTab, isAuthenticated]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/${activeTab}`);
@@ -92,7 +86,13 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (isAuthenticated && (activeTab === 'projects' || activeTab === 'experience')) {
+      fetchData();
+    }
+  }, [activeTab, isAuthenticated, fetchData]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
