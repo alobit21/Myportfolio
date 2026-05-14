@@ -16,7 +16,7 @@ const CaseStudyCard = ({ project }) => {
 
     const interval = setInterval(() => {
       setActiveImageIndex((prev) => (prev + 1) % allImages.length);
-    }, 4000); // Change image every 4 seconds
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [allImages.length, isPaused]);
@@ -32,33 +32,33 @@ const CaseStudyCard = ({ project }) => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16 bg-[#0B1120]/80 backdrop-blur-md rounded-3xl p-8 lg:p-12 border border-white/5 shadow-2xl max-w-6xl mx-auto min-h-[600px]">
+    <div className="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16 bg-[#0B1120]/90 backdrop-blur-xl rounded-none md:rounded-3xl p-5 md:p-8 lg:p-12 border-y md:border border-white/10 shadow-2xl w-full mx-auto min-h-[500px] lg:min-h-[600px]">
       {/* Left Content */}
-      <div className="flex-1 space-y-6 flex flex-col justify-center">
-        <div className="inline-block px-4 py-1 rounded-md bg-[#0D2B2B] text-[#10B981] text-xs font-bold tracking-widest uppercase border border-[#10B981]/20 self-start">
+      <div className="flex-1 space-y-4 md:space-y-6 flex flex-col justify-center order-2 lg:order-1 px-4 md:px-0">
+        <div className="inline-block px-3 py-1 rounded-md bg-[#10B981]/10 text-[#10B981] text-[10px] md:text-xs font-bold tracking-widest uppercase border border-[#10B981]/20 self-start">
           {project.tags?.[0] || 'Web Development'}
         </div>
         
-        <h3 className="text-3xl lg:text-5xl font-bold text-white tracking-tight">
+        <h3 className="text-2xl md:text-3xl lg:text-5xl font-bold text-white tracking-tight">
           {project.title}
         </h3>
         
-        <p className="text-gray-400 text-sm lg:text-lg leading-relaxed max-w-xl">
+        <p className="text-gray-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl">
           {project.description}
         </p>
         
         <div className="border-l-4 border-yellow-500 pl-4 py-2 bg-yellow-500/5 rounded-r-lg">
-          <p className="text-yellow-500 text-sm italic font-medium">
+          <p className="text-yellow-500 text-xs md:text-sm italic font-medium">
             {project.achievements?.[0] || "Provided a modern robust solution that significantly reduced operational costs and increased efficiency by 70%."}
           </p>
         </div>
         
-        <div className="pt-4 flex items-center gap-6">
+        <div className="pt-4 flex flex-wrap items-center gap-4 md:gap-6">
           <a 
             href={project.previewUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 text-white font-semibold hover:text-[#3ca2fa] transition-colors"
+            className="group flex items-center gap-2 text-white text-sm md:text-base font-semibold hover:text-[#3ca2fa] transition-colors"
           >
             Read More
             <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#3ca2fa] group-hover:bg-[#3ca2fa] group-hover:text-white transition-all">
@@ -70,7 +70,7 @@ const CaseStudyCard = ({ project }) => {
             href={project.gitUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-500 hover:text-white transition-colors text-sm font-medium"
+            className="text-gray-500 hover:text-white transition-colors text-xs md:text-sm font-medium"
           >
             View Code
           </a>
@@ -78,9 +78,9 @@ const CaseStudyCard = ({ project }) => {
       </div>
 
       {/* Right Image Carousel */}
-      <div className="flex-1 w-full lg:w-auto flex items-center justify-center">
+      <div className="flex-1 w-full flex items-center justify-center order-1 lg:order-2 px-1 md:px-0">
         <div 
-          className="relative w-full h-[400px] lg:h-[500px] min-h-[400px] rounded-2xl overflow-hidden shadow-2xl group border border-white/10 bg-black/20"
+          className="relative w-full h-[250px] md:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl group border border-white/10 bg-black/40"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
@@ -91,7 +91,7 @@ const CaseStudyCard = ({ project }) => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="absolute inset-0 w-full h-full p-4"
+              className="absolute inset-0 w-full h-full p-2 md:p-4"
             >
               <Image
                 src={allImages[activeImageIndex]}
@@ -107,38 +107,33 @@ const CaseStudyCard = ({ project }) => {
             <>
               <button
                 onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-[#3ca2fa] transition-all opacity-0 group-hover:opacity-100 z-10"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-[#3ca2fa] transition-all lg:opacity-0 lg:group-hover:opacity-100 z-10"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-4 h-4 md:w-6 md:h-6" />
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-[#3ca2fa] transition-all opacity-0 group-hover:opacity-100 z-10"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-[#3ca2fa] transition-all lg:opacity-0 lg:group-hover:opacity-100 z-10"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-4 h-4 md:w-6 md:h-6" />
               </button>
 
               {/* Internal Pagination Dots */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                 {allImages.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={(e) => { e.stopPropagation(); setActiveImageIndex(idx); }}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      idx === activeImageIndex ? 'bg-[#3ca2fa] w-4' : 'bg-white/30 hover:bg-white/50'
+                    className={`w-1.5 h-1.5 rounded-full transition-all ${
+                      idx === activeImageIndex ? 'bg-[#3ca2fa] w-3' : 'bg-white/30'
                     }`}
                   />
                 ))}
               </div>
-
-              {/* Image Counter */}
-              <div className="absolute top-6 right-6 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white/80 font-medium border border-white/5">
-                {activeImageIndex + 1} / {allImages.length}
-              </div>
             </>
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#0B1120]/20 to-transparent pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#0B1120]/40 to-transparent pointer-events-none"></div>
         </div>
       </div>
     </div>
@@ -188,7 +183,7 @@ const ProjectsSection = () => {
   if (projects.length === 0) return null;
 
   return (
-    <section id="projects" className="relative min-h-screen py-24 px-4 flex flex-col items-center justify-center bg-slate-900 overflow-hidden">
+    <section id="projects" className="relative min-h-screen py-16 flex flex-col items-center justify-center bg-slate-900 overflow-hidden">
       {/* Background Boxes Component */}
       <div className="absolute inset-0 w-full h-full bg-slate-900 z-0">
         <Boxes />
@@ -197,25 +192,25 @@ const ProjectsSection = () => {
       {/* Gradient Mask for Background */}
       <div className="absolute inset-0 w-full h-full bg-slate-900 [mask-image:radial-gradient(transparent,white)] pointer-events-none z-10" />
 
-      <div className="relative z-20 w-full max-w-7xl mx-auto space-y-16">
+      <div className="relative z-20 w-full md:max-w-7xl mx-auto space-y-10 md:space-y-16">
         {/* Header */}
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-4 md:space-y-6 px-4">
           <div className="flex items-center justify-center gap-3">
-            <div className="h-[2px] w-8 bg-[#10B981]"></div>
-            <span className="text-[#10B981] text-sm font-bold tracking-[0.3em] uppercase">My Success Stories</span>
+            <div className="h-[2px] w-6 md:w-8 bg-[#10B981]"></div>
+            <span className="text-[#10B981] text-[10px] md:text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase">My Success Stories</span>
           </div>
           
-          <h2 className="text-6xl lg:text-8xl font-black text-white tracking-tighter">
+          <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-white tracking-tighter">
             CASE <span className="text-gray-500">STUDIES</span>
           </h2>
           
-          <p className="text-gray-400 text-sm lg:text-lg font-medium tracking-widest uppercase max-w-3xl mx-auto">
+          <p className="text-gray-400 text-[10px] md:text-sm lg:text-lg font-medium tracking-widest uppercase max-w-3xl mx-auto px-4">
             Discover the many ways in which our clients have embraced modern engineering
           </p>
         </div>
 
         {/* Carousel Container */}
-        <div className="relative px-4 lg:px-20">
+        <div className="relative w-full md:px-20">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
               key={currentIndex}
@@ -228,30 +223,32 @@ const ProjectsSection = () => {
                 x: { type: "spring", stiffness: 300, damping: 30 },
                 opacity: { duration: 0.2 }
               }}
-              className="w-full"
+              className="w-full flex justify-center"
             >
               <CaseStudyCard project={projects[currentIndex]} />
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation Arrows */}
-          <button
-            onClick={() => paginate(-1)}
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-[#3ca2fa] hover:border-[#3ca2fa] transition-all z-30 shadow-xl backdrop-blur-sm"
-          >
-            <ChevronLeft className="w-8 h-8" />
-          </button>
-          
-          <button
-            onClick={() => paginate(1)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-[#3ca2fa] hover:border-[#3ca2fa] transition-all z-30 shadow-xl backdrop-blur-sm"
-          >
-            <ChevronRight className="w-8 h-8" />
-          </button>
+          {/* Navigation Arrows - Repositioned and Restyled */}
+          <div className="flex justify-center items-center gap-10 mt-8 lg:mt-0">
+            <button
+              onClick={() => paginate(-1)}
+              className="lg:absolute lg:left-0 lg:top-1/2 lg:-translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-[#3ca2fa] hover:border-[#3ca2fa] transition-all z-30 shadow-xl backdrop-blur-md"
+            >
+              <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+            </button>
+            
+            <button
+              onClick={() => paginate(1)}
+              className="lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-[#3ca2fa] hover:border-[#3ca2fa] transition-all z-30 shadow-xl backdrop-blur-md"
+            >
+              <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
+            </button>
+          </div>
         </div>
 
         {/* Pagination Dots */}
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-3 md:gap-4">
           {projects.map((_, idx) => (
             <button
               key={idx}
@@ -259,8 +256,8 @@ const ProjectsSection = () => {
                 setDirection(idx > currentIndex ? 1 : -1);
                 setCurrentIndex(idx);
               }}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                idx === currentIndex ? 'w-10 bg-[#10B981]' : 'w-2.5 bg-white/20 hover:bg-white/40'
+              className={`h-1.5 md:h-2.5 rounded-full transition-all duration-300 ${
+                idx === currentIndex ? 'w-6 md:w-10 bg-[#10B981]' : 'w-1.5 md:w-2.5 bg-white/20 hover:bg-white/40'
               }`}
             />
           ))}
