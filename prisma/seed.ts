@@ -22,13 +22,22 @@ async function main() {
   await prisma.admin.deleteMany()
 
   // Seed Admin
-  const hashedPassword = await bcrypt.hash('admin123', 10)
-  await prisma.admin.create({
-    data: {
+  const admins = [
+    {
       username: 'admin',
-      password: hashedPassword
+      password: await bcrypt.hash('MacAdmin@2026!', 10)
+    },
+    {
+      username: 'admin2',
+      password: await bcrypt.hash('MacDeveloper#2026!', 10)
     }
-  })
+  ]
+
+  for (const admin of admins) {
+    await prisma.admin.create({
+      data: admin
+    })
+  }
 
 
   // Seed Projects
@@ -90,49 +99,80 @@ async function main() {
   // Seed Experiences
   const experiences = [
     {
-      title: 'Freelance Full-Stack Developer',
-      company: 'Self-Employed',
+      title: 'Backend / Full Stack Developer',
+      company: 'Personal Project',
       location: 'Remote',
-      date: '2022 – Present',
+      date: '2023',
+      type: 'Personal',
+      description: [
+        'Built a full-featured e-commerce platform using Django MVT architecture',
+        'Implemented product catalog, cart, and secure checkout functionality',
+        'Designed relational database models for orders, users, and inventory',
+        'Integrated authentication system for user accounts and order tracking',
+        'Optimized backend queries to improve page load performance'
+      ],
+      technologies: ['Django', 'Python', 'PostgreSQL', 'HTML', 'CSS'],
+      achievements: ['Completed end-to-end system with real-world features']
+    },
+    {
+      title: 'Frontend Developer',
+      company: 'Personal Project',
+      location: 'Remote',
+      date: '2024 - Present',
+      type: 'Personal',
+      description: [
+        'Designed and developed a responsive portfolio website to showcase projects',
+        'Implemented modern UI/UX principles for improved user engagement',
+        'Integrated project sections with dynamic content and navigation',
+        'Optimized site performance and mobile responsiveness'
+      ],
+      technologies: ['Next.js', 'React', 'Tailwind CSS', 'Framer Motion', 'Three.js'],
+      achievements: ['Central hub for showcasing work and skills']
+    },
+    {
+      title: 'Open Source Developer',
+      company: 'Personal Project',
+      location: 'Remote',
+      date: '2024',
+      type: 'Personal',
+      description: [
+        'Developed and published an npm package to track and visualize GitHub activity',
+        'Integrated with GitHub API to fetch user contribution data',
+        'Designed reusable and configurable package for developers',
+        'Documented usage and setup for open-source community'
+      ],
+      technologies: ['Node.js', 'JavaScript', 'GitHub API', 'npm'],
+      achievements: ['Published on npm registry']
+    },
+    {
+      title: 'Web Developer',
+      company: 'Freelance',
+      location: 'Remote',
+      date: '2023 - 2024',
       type: 'Freelance',
       description: [
-        'Developed and deployed 10+ custom websites for small businesses using React, Next.js, and Tailwind CSS',
-        'Implemented responsive designs achieving 95+ mobile usability scores across all projects',
-        'Managed full project lifecycle from client requirements to deployment on Vercel and AWS',
-        'Integrated payment systems, booking platforms, and third-party APIs for enhanced functionality'
+        'Designed and developed a tourism website for a safari business',
+        'Created responsive pages showcasing travel packages and destinations',
+        'Implemented contact and booking inquiry features',
+        'Collaborated with client to refine design and content requirements'
       ],
-      technologies: ['React', 'Next.js', 'Node.js', 'Tailwind CSS', 'PostgreSQL', 'AWS', 'Vercel'],
-      achievements: ['10+ satisfied clients', '95%+ mobile scores', 'Full project delivery']
+      technologies: ['Django', 'React', 'PostgreSQL', 'Tailwind CSS'],
+      achievements: ['Successfully delivered client project', 'Improved online presence for business']
     },
     {
-      title: 'AI Chatbot System',
-      company: 'University Capstone Project',
+      title: 'Student Developer / Mentor',
+      company: 'University Project Collaboration',
       location: 'University Campus',
-      date: 'Sept 2023 – May 2024',
+      date: '2023',
       type: 'Academic',
       description: [
-        'Led development of AI-powered student support chatbot serving 500+ test users',
-        'Integrated OpenAI GPT API for real-time query processing with 85% accuracy rate',
-        'Built responsive React frontend with Node.js backend handling 1000+ concurrent requests',
-        'Collaborated in 3-person team using Agile methodologies and Git version control'
+        'Contributed to the development of two final-year software projects',
+        'Assisted in system design, implementation, and debugging',
+        'Provided technical guidance to senior students on development challenges',
+        'Collaborated on project architecture and feature implementation'
       ],
-      technologies: ['React', 'Node.js', 'OpenAI API', 'Express', 'MongoDB', 'Git'],
-      achievements: ['500+ test users', '85% accuracy', 'Team lead']
-    },
-    {
-      title: 'Full-Stack Development & Cloud Architecture',
-      company: 'Continuous Learning',
-      location: 'Self-Directed',
-      date: '2021 – Present',
-      type: 'Skills Development',
-      description: [
-        'Mastered modern web stack: React, Next.js, TypeScript, and cloud deployment platforms',
-        'Built 15+ personal projects including e-commerce sites, blogs, and portfolio applications',
-        'Achieved 200+ LeetCode problems solved with focus on algorithms and data structures',
-        'Maintain active GitHub profile with 100+ commits and collaborative open-source contributions'
-      ],
-      technologies: ['React', 'Next.js', 'TypeScript', 'Python', 'Docker', 'AWS', 'GraphQL'],
-      achievements: ['15+ projects built', '200+ LeetCode solved', 'Active GitHub profile']
+      technologies: ['Python', 'JavaScript', 'React', 'Git'],
+      achievements: ['Supported successful completion of 2 final-year projects', 'Recognized for technical contribution despite being a junior student']
     }
   ]
 
