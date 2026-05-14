@@ -160,15 +160,21 @@ const TechnologiesStackSection = () => {
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div 
-          className="text-center mb-16"
+          className="text-center space-y-6 mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#3ca2fa] to-[#3ca2fa]/80">
-            Technology Stack
+          <div className="flex items-center justify-center gap-3">
+            <div className="h-[2px] w-8 bg-[#10B981]"></div>
+            <span className="text-[#10B981] text-sm font-bold tracking-[0.3em] uppercase">My Digital Toolkit</span>
+          </div>
+          
+          <h2 className="text-5xl lg:text-7xl font-black text-white tracking-tighter">
+            TECH <span className="text-gray-500">STACK</span>
           </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+          
+          <p className="text-gray-400 text-sm lg:text-lg font-medium tracking-widest uppercase max-w-3xl mx-auto">
             Technologies and tools I use to build modern, scalable applications
           </p>
         </motion.div>

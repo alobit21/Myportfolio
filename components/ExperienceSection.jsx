@@ -72,9 +72,20 @@ export default function ExperienceSection() {
         className="fixed w-6 h-6 bg-[#3ca2fa] rounded-full pointer-events-none mix-blend-screen opacity-50 z-50"
       />
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#3ca2fa] to-[#3ca2fa]/80 drop-shadow-md">
-          Experience
-        </h2>
+        <div className="text-center space-y-6 mb-16">
+          <div className="flex items-center justify-center gap-3">
+            <div className="h-[2px] w-8 bg-[#10B981]"></div>
+            <span className="text-[#10B981] text-sm font-bold tracking-[0.3em] uppercase">My Career Path</span>
+          </div>
+          
+          <h2 className="text-5xl lg:text-7xl font-black text-white tracking-tighter">
+            WORK <span className="text-gray-500">EXPERIENCE</span>
+          </h2>
+          
+          <p className="text-gray-400 text-sm lg:text-lg font-medium tracking-widest uppercase max-w-3xl mx-auto">
+            A journey through the projects and companies that shaped my professional skills
+          </p>
+        </div>
 
         {/* Medium+ Devices Grid Layout */}
         <div className="hidden md:grid grid-cols-2 gap-6 auto-rows-min" role="list" aria-label="Work and project experience">
