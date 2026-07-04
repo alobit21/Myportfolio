@@ -4,34 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaGraduationCap, FaSchool, FaUniversity } from "react-icons/fa";
 
-const skills = [
-  { name: "HTML", level: 90, color: "#E44D26" },
-  { name: "CSS", level: 85, color: "#264DE4" },
-  { name: "JavaScript", level: 80, color: "#F0DB4F" },
-  { name: "React", level: 75, color: "#61DAFB" },
-  { name: "Node.js", level: 70, color: "#68A063" },
-  { name: "Python", level: 65, color: "#3776AB" },
-];
 
-const education = [
-  {
-    id: 1,
-    title: "University of Dodoma",
-    type: "University",
-    date: "2022 - Present",
-    icon: <FaUniversity className="text-[#3ca2fa] text-xl" />,
-    description: "Pursuing a degree in Computer Science. Actively participating in coding competitions and open source projects."
-  },
-  {
-    id: 2,
-    title: "Njombe Secondary School",
-    type: "Advanced Level",
-    date: "2020 - 2022",
-    icon: <FaSchool className="text-[#3ca2fa] text-xl" />,
-    description: "Completed Advanced Level Education with focus on Physics, Chemistry, and Mathematics (PCM)."
-  }
- 
-];
 
 const expertise = [
   { name: "Web Development", level: 90 },
@@ -125,7 +98,7 @@ const TimelineItem = ({ item, isLast }) => {
       >
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-gray-700/50 rounded-full">
-            {item.icon}
+            <FaGraduationCap className="text-[#3ca2fa] text-xl" />
           </div>
           <div>
             <h4 className="text-lg font-semibold text-[#3ca2fa]">{item.title}</h4>
@@ -143,6 +116,28 @@ const AboutSection = () => {
   const aboutRef = useRef(null);
   const skillsRef = useRef(null);
   const educationRef = useRef(null);
+
+  const [dbSkills, setDbSkills] = useState([]);
+  const [dbEducation, setDbEducation] = useState([]);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [skillsRes, eduRes, profRes] = await Promise.all([
+          fetch('/api/skills'),
+          fetch('/api/education'),
+          fetch('/api/profile')
+        ]);
+        setDbSkills(await skillsRes.json());
+        setDbEducation(await eduRes.json());
+        setProfile(await profRes.json());
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const scrollToSection = (ref) => {
     ref.current.scrollIntoView({ behavior: "smooth" });
@@ -176,7 +171,7 @@ const AboutSection = () => {
           >
             <div className="relative w-64 h-64 mx-auto lg:mx-0">
               <Image
-                src="/images/imgpro.png"
+                src={profile?.profileImage || "/images/imgpro.png"}
                 alt="Profile"
                 fill
                 className="rounded-full border-4 border-[#3ca2fa] object-cover"
@@ -232,19 +227,32 @@ const AboutSection = () => {
               {activeTab === "about" && (
                 <div ref={aboutRef}>
                   <h3 className="text-2xl font-bold text-[#3ca2fa] mb-4">Get to know me!</h3>
-                  <p className="text-gray-300 mb-4">
-                    I'm a passionate Full Stack Developer with expertise in building modern web applications.
-                    With a strong foundation in both front-end and back-end technologies, I create seamless
-                    user experiences and robust server-side solutions.
-                  </p>
-                  <p className="text-gray-300 mb-6">
-                    My journey in web development started with a curiosity about how things work, which led me
-                    to pursue a career in technology. I'm constantly learning and staying up-to-date with the
-                    latest industry trends and best practices.
-                  </p>
-                  <button className="bg-[#3ca2fa] hover:bg-[#3ca2fa]/80 text-gray-900 font-medium py-2 px-6 rounded-md transition-all duration-300">
-                    Download CV
-                  </button>
+                  {profile?.bio ? (
+                    <p className="text-gray-300 mb-6 whitespace-pre-wrap">{profile.bio}</p>
+                  ) : (
+                    <>
+                      <p className="text-gray-300 mb-4">
+                        I'm a passionate Full Stack Developer with expertise in building modern web applications.
+                        With a strong foundation in both front-end and back-end technologies, I create seamless
+                        user experiences and robust server-side solutions.
+                      </p>
+                      <p className="text-gray-300 mb-6">
+                        My journey in web development started with a curiosity about how things work, which led me
+                        to pursue a career in technology. I'm constantly learning and staying up-to-date with the
+                        latest industry trends and best practices.
+                      </p>
+                    </>
+                  )}
+                  {profile?.cvUrl && (
+                    <a 
+                      href={profile.cvUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-block bg-[#3ca2fa] hover:bg-[#3ca2fa]/80 text-gray-900 font-medium py-2 px-6 rounded-md transition-all duration-300"
+                    >
+                      Download CV
+                    </a>
+                  )}
                 </div>
               )}
 
@@ -252,13 +260,14 @@ const AboutSection = () => {
                 <div ref={educationRef} className="w-full">
                   <h3 className="text-2xl font-bold text-[#3ca2fa] mb-6">Education Timeline</h3>
                   <div className="relative">
-                    {education.map((item, index) => (
+                    {dbEducation.map((item, index) => (
                       <TimelineItem 
                         key={item.id} 
                         item={item} 
-                        isLast={index === education.length - 1} 
+                        isLast={index === dbEducation.length - 1} 
                       />
                     ))}
+                    {dbEducation.length === 0 && <p className="text-gray-400">No education records found.</p>}
                   </div>
                 </div>
               )}
@@ -298,9 +307,9 @@ const AboutSection = () => {
                 <div ref={skillsRef} className="w-full">
                   <h3 className="text-2xl font-semibold text-[#3ca2fa] mb-8">My Skills</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {skills.map((skill, index) => (
+                    {dbSkills.map((skill, index) => (
                       <motion.div 
-                        key={index} 
+                        key={skill.id || index} 
                         className="space-y-3 bg-gray-800/50 p-4 rounded-xl border border-gray-700/50 hover:border-[#3ca2fa]/30 transition-colors"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -314,7 +323,7 @@ const AboutSection = () => {
                         <div className="w-full bg-gray-700/80 rounded-full h-2.5 overflow-hidden">
                           <motion.div
                             className="h-full rounded-full"
-                            style={{ background: skill.color }}
+                            style={{ background: skill.color || '#3ca2fa' }}
                             initial={{ width: 0 }}
                             whileInView={{ width: `${skill.level}%` }}
                             viewport={{ once: true }}
@@ -323,6 +332,7 @@ const AboutSection = () => {
                         </div>
                       </motion.div>
                     ))}
+                    {dbSkills.length === 0 && <p className="text-gray-400 col-span-full">No skills found.</p>}
                   </div>
                 </div>
               )}

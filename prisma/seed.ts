@@ -180,6 +180,51 @@ async function main() {
     await prisma.experience.create({ data: exp })
   }
 
+  // Seed Education
+  const education = [
+    {
+      title: "University of Dodoma",
+      type: "University",
+      date: "2022 - Present",
+      icon: "university",
+      description: "Pursuing a degree in Computer Science. Actively participating in coding competitions and open source projects."
+    },
+    {
+      title: "Njombe Secondary School",
+      type: "Advanced Level",
+      date: "2020 - 2022",
+      icon: "school",
+      description: "Completed Advanced Level Education with focus on Physics, Chemistry, and Mathematics (PCM)."
+    }
+  ]
+  for (const edu of education) {
+    await prisma.education.create({ data: edu })
+  }
+
+  // Seed Skills
+  const skills = [
+    { name: "HTML", level: 90, color: "#E44D26" },
+    { name: "CSS", level: 85, color: "#264DE4" },
+    { name: "JavaScript", level: 80, color: "#F0DB4F" },
+    { name: "React", level: 75, color: "#61DAFB" },
+    { name: "Node.js", level: 70, color: "#68A063" },
+    { name: "Python", level: 65, color: "#3776AB" },
+  ]
+  for (const skill of skills) {
+    await prisma.skill.create({ data: skill })
+  }
+
+  // Seed Profile
+  await prisma.profile.create({
+    data: {
+      name: "Aloyce Mtavangu",
+      title: "Full Stack Developer",
+      bio: "I'm a passionate Full Stack Developer with expertise in building modern web applications. With a strong foundation in both front-end and back-end technologies, I create seamless user experiences and robust server-side solutions.\n\nMy journey in web development started with a curiosity about how things work, which led me to pursue a career in technology. I'm constantly learning and staying up-to-date with the latest industry trends and best practices.",
+      profileImage: "/images/imgpro.png",
+      cvUrl: "/resume.pdf"
+    }
+  })
+
   console.log('Seeding completed!')
 }
 

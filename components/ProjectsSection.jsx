@@ -5,10 +5,12 @@ import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { Boxes } from "@/components/ui/background-boxes";
+import ImageLightbox from './ImageLightbox';
 
 const CaseStudyCard = ({ project }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const allImages = [project.image, ...(project.images || [])].filter(Boolean);
 
   useEffect(() => {
@@ -80,9 +82,10 @@ const CaseStudyCard = ({ project }) => {
       {/* Right Image Carousel */}
       <div className="flex-1 w-full flex items-center justify-center order-1 lg:order-2 px-1 md:px-0">
         <div 
-          className="relative w-full h-[250px] md:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl group border border-white/10 bg-black/40"
+          className="relative w-full h-[250px] md:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl group border border-white/10 bg-black/40 cursor-pointer"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          onClick={() => setLightboxOpen(true)}
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -134,8 +137,21 @@ const CaseStudyCard = ({ project }) => {
           )}
 
           <div className="absolute inset-0 bg-gradient-to-tr from-[#0B1120]/40 to-transparent pointer-events-none"></div>
+          
+          {/* Fullscreen icon indicator */}
+          <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none border border-white/10 shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+          </div>
         </div>
       </div>
+
+      {lightboxOpen && (
+        <ImageLightbox 
+          images={allImages} 
+          initialIndex={activeImageIndex} 
+          onClose={() => setLightboxOpen(false)} 
+        />
+      )}
     </div>
   );
 };

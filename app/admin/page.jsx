@@ -2,6 +2,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import Image from 'next/image';
+import ImageLightbox from '@/components/ImageLightbox';
+import EducationManager from './components/EducationManager';
+import SkillsManager from './components/SkillsManager';
+import SettingsManager from './components/SettingsManager';
 import {
   LayoutDashboard,
   FolderKanban,
@@ -44,6 +48,7 @@ export default function AdminDashboard() {
   const [modalMode, setModalMode] = useState('create'); // 'create' or 'edit'
   const [editingItem, setEditingItem] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [lightboxProject, setLightboxProject] = useState(null);
 
   // Form States
   const [projectForm, setProjectForm] = useState({
@@ -539,7 +544,10 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {projects.map(project => (
             <div key={project.id} className="flex flex-col bg-[#1a1f2e] rounded-2xl border border-gray-800 overflow-hidden group hover:border-[#3ca2fa]/50 hover:shadow-lg hover:shadow-[#3ca2fa]/10 transition-all duration-300">
-              <div className="relative h-52 bg-gray-800 overflow-hidden">
+              <div 
+                className="relative h-52 bg-gray-800 overflow-hidden cursor-pointer"
+                onClick={() => setLightboxProject(project)}
+              >
                 {project.image ? (
                   <Image src={project.image} alt={project.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" />
                 ) : (
@@ -562,14 +570,14 @@ export default function AdminDashboard() {
                 {/* Action Buttons */}
                 <div className="absolute top-3 right-3 flex gap-2 translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                   <button
-                    onClick={() => handleEditProject(project)}
+                    onClick={(e) => { e.stopPropagation(); handleEditProject(project); }}
                     className="p-2 bg-white/10 hover:bg-[#3ca2fa] backdrop-blur-md text-white rounded-full transition-all duration-300 shadow-sm border border-white/10"
                     title="Edit Project"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => handleDeleteProject(project.id)}
+                    onClick={(e) => { e.stopPropagation(); handleDeleteProject(project.id); }}
                     className="p-2 bg-white/10 hover:bg-red-500 backdrop-blur-md text-white rounded-full transition-all duration-300 shadow-sm border border-white/10"
                     title="Delete Project"
                   >
@@ -614,6 +622,13 @@ export default function AdminDashboard() {
             Create your first project
           </button>
         </div>
+      )}
+
+      {lightboxProject && (
+        <ImageLightbox 
+          images={[lightboxProject.image, ...(lightboxProject.images || [])].filter(Boolean)} 
+          onClose={() => setLightboxProject(null)} 
+        />
       )}
     </div>
   );
@@ -1071,7 +1086,9 @@ export default function AdminDashboard() {
           {activeTab === 'dashboard' && <DashboardContent />}
           {activeTab === 'projects' && <ProjectsContent />}
           {activeTab === 'experience' && <ExperienceContent />}
-          {['education', 'skills', 'settings'].includes(activeTab) && <PlaceholderContent title={activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} />}
+          {activeTab === 'education' && <EducationManager />}
+          {activeTab === 'skills' && <SkillsManager />}
+          {activeTab === 'settings' && <SettingsManager />}
         </div>
       </main>
 
