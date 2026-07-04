@@ -12,12 +12,14 @@ const CaseStudyCard = ({ project }) => {
   const [isPaused, setIsPaused] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [direction, setDirection] = useState(0);
   const allImages = [project.image, ...(project.images || [])].filter(Boolean);
 
   useEffect(() => {
     if (allImages.length <= 1 || isPaused) return;
 
     const interval = setInterval(() => {
+      setDirection(1);
       setActiveImageIndex((prev) => (prev + 1) % allImages.length);
     }, 4000);
 
@@ -26,11 +28,13 @@ const CaseStudyCard = ({ project }) => {
 
   const nextImage = (e) => {
     e?.stopPropagation();
+    setDirection(1);
     setActiveImageIndex((prev) => (prev + 1) % allImages.length);
   };
 
   const prevImage = (e) => {
     e?.stopPropagation();
+    setDirection(-1);
     setActiveImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
@@ -45,18 +49,19 @@ const CaseStudyCard = ({ project }) => {
       {/* Right Image Carousel (Moved to top on mobile, left on desktop) */}
       <div className="w-full lg:w-[55%] relative bg-slate-900/30 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-800">
         <div 
-          className="relative w-full h-[250px] md:h-[350px] lg:absolute lg:inset-0 cursor-pointer group"
+          className="relative w-full h-[180px] sm:h-[250px] md:h-[350px] lg:absolute lg:inset-0 cursor-pointer group"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onClick={() => setLightboxOpen(true)}
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={activeImageIndex}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              custom={direction}
+              initial={(dir) => ({ opacity: 0, x: dir > 0 ? 60 : -60, scale: 0.95 })}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={(dir) => ({ opacity: 0, x: dir < 0 ? 60 : -60, scale: 0.95 })}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="absolute inset-0 w-full h-full"
             >
               <Image
@@ -107,9 +112,9 @@ const CaseStudyCard = ({ project }) => {
       </div>
 
       {/* Left Content (Text) */}
-      <div className="flex flex-col w-full lg:w-[45%] p-6 md:p-8 lg:p-10 justify-center">
-        <div className="space-y-4">
-          <div className="inline-flex items-center rounded-full border border-slate-800 bg-slate-900/50 px-3 py-1 text-xs font-medium text-[#3ca2fa]">
+      <div className="flex flex-col w-full lg:w-[45%] p-4 sm:p-6 md:p-8 lg:p-10 justify-center">
+        <div className="space-y-2 sm:space-y-4">
+          <div className="inline-flex items-center rounded-full border border-slate-800 bg-slate-900/50 px-3 py-1 text-[10px] md:text-xs font-medium text-[#3ca2fa]">
             {project.tags?.[0] || 'Web Development'}
           </div>
           
@@ -117,9 +122,9 @@ const CaseStudyCard = ({ project }) => {
             {project.title}
           </h3>
           
-          <div className="text-sm md:text-base text-slate-400 leading-relaxed">
+          <div className="text-xs sm:text-sm md:text-base text-slate-400 leading-relaxed">
             {isExpanded && (
-              <div className="mb-4 text-slate-300">
+              <div className="mb-3 text-slate-300">
                 {project.description}
               </div>
             )}
@@ -142,7 +147,7 @@ const CaseStudyCard = ({ project }) => {
           )}
         </div>
         
-        <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-6 border-t border-slate-800/60">
+        <div className="mt-4 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4 sm:pt-6 border-t border-slate-800/60">
           <a 
             href={project.previewUrl}
             target="_blank"
@@ -189,9 +194,16 @@ const ProjectsSection = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        const cachedProjects = sessionStorage.getItem('portfolio_projects');
+        if (cachedProjects) {
+          setProjects(JSON.parse(cachedProjects));
+          return;
+        }
+
         const response = await fetch('/api/projects');
         const data = await response.json();
         setProjects(data);
+        sessionStorage.setItem('portfolio_projects', JSON.stringify(data));
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -201,18 +213,21 @@ const ProjectsSection = () => {
 
   const slideVariants = {
     enter: (direction) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0
+      x: direction > 0 ? 800 : -800,
+      opacity: 0,
+      scale: 0.95
     }),
     center: {
       zIndex: 1,
       x: 0,
-      opacity: 1
+      opacity: 1,
+      scale: 1
     },
     exit: (direction) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0
+      x: direction < 0 ? 800 : -800,
+      opacity: 0,
+      scale: 0.95
     })
   };
 
@@ -224,7 +239,7 @@ const ProjectsSection = () => {
   if (projects.length === 0) return null;
 
   return (
-    <section id="projects" className="relative min-h-screen py-16 flex flex-col items-center justify-center bg-slate-900 overflow-hidden">
+    <section id="projects" className="relative min-h-screen py-8 md:py-16 flex flex-col items-center justify-center bg-slate-900 overflow-hidden">
       {/* Background Boxes Component */}
       <div className="absolute inset-0 w-full h-full bg-slate-900 z-0">
         <Boxes />
@@ -233,9 +248,9 @@ const ProjectsSection = () => {
       {/* Gradient Mask for Background */}
       <div className="absolute inset-0 w-full h-full bg-slate-900 [mask-image:radial-gradient(transparent,white)] pointer-events-none z-10" />
 
-      <div className="relative z-20 w-[98%] mx-auto space-y-10 md:space-y-16">
+      <div className="relative z-20 w-[98%] mx-auto space-y-6 md:space-y-16">
         {/* Header */}
-        <div className="text-center space-y-4 md:space-y-6 px-4">
+        <div className="text-center space-y-2 md:space-y-6 px-4">
           <div className="flex items-center justify-center gap-3">
             <div className="h-[2px] w-6 md:w-8 bg-[#10B981]"></div>
             <span className="text-[#10B981] text-[10px] md:text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase">My Success Stories</span>
@@ -261,8 +276,9 @@ const ProjectsSection = () => {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
+                x: { type: "spring", stiffness: 350, damping: 35 },
+                opacity: { duration: 0.3 },
+                scale: { duration: 0.4, ease: "easeOut" }
               }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
@@ -283,7 +299,7 @@ const ProjectsSection = () => {
           </AnimatePresence>
 
         {/* Bottom Controls */}
-        <div className="flex flex-row justify-between items-center w-[98%] mx-auto px-4 mt-8 md:mt-10">
+        <div className="flex flex-row justify-between items-center w-[98%] mx-auto px-4 mt-4 md:mt-10">
           {/* Pagination Dots */}
           <div className="flex gap-3 md:gap-4">
             {projects.map((_, idx) => (
