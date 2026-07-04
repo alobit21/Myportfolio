@@ -536,54 +536,66 @@ export default function AdminDashboard() {
           <div className="animate-spin w-8 h-8 border-2 border-[#3ca2fa] border-t-transparent rounded-full mx-auto"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {projects.map(project => (
-            <div key={project.id} className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden group">
-              <div className="relative h-40 bg-gray-700">
+            <div key={project.id} className="flex flex-col bg-[#1a1f2e] rounded-2xl border border-gray-800 overflow-hidden group hover:border-[#3ca2fa]/50 hover:shadow-lg hover:shadow-[#3ca2fa]/10 transition-all duration-300">
+              <div className="relative h-52 bg-gray-800 overflow-hidden">
                 {project.image ? (
-                  <Image src={project.image} alt={project.title} fill className="object-cover" />
+                  <Image src={project.image} alt={project.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" />
                 ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <ImageIcon className="w-12 h-12 text-gray-600" />
+                  <div className="flex items-center justify-center h-full bg-gradient-to-br from-gray-800 to-gray-900">
+                    <FolderKanban className="w-12 h-12 text-gray-600" />
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
+                
+                {/* Subtle top gradient for badges and top actions */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Photo Count Badge */}
                 {project.images && project.images.length > 0 && (
-                  <div className="absolute top-2 left-2 bg-gray-900/80 px-2 py-1 rounded text-xs text-white flex items-center gap-1">
-                    <ImageIcon className="w-3 h-3" />
+                  <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-medium text-white flex items-center gap-1.5 border border-white/10 shadow-sm">
+                    <ImageIcon className="w-3.5 h-3.5 text-[#3ca2fa]" />
                     {project.images.length + 1} photos
                   </div>
                 )}
-                <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                
+                {/* Action Buttons */}
+                <div className="absolute top-3 right-3 flex gap-2 translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                   <button
                     onClick={() => handleEditProject(project)}
-                    className="p-2 bg-[#3ca2fa] hover:bg-[#3ca2fa]/80 text-gray-900 rounded-lg transition"
+                    className="p-2 bg-white/10 hover:bg-[#3ca2fa] backdrop-blur-md text-white rounded-full transition-all duration-300 shadow-sm border border-white/10"
+                    title="Edit Project"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDeleteProject(project.id)}
-                    className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
+                    className="p-2 bg-white/10 hover:bg-red-500 backdrop-blur-md text-white rounded-full transition-all duration-300 shadow-sm border border-white/10"
+                    title="Delete Project"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-              <div className="p-4">
-                <div className="flex justify-between items-start">
-                  <h3 className="font-semibold text-white truncate">{project.title}</h3>
-                  {project.images && project.images.length > 0 && (
-                    <span className="text-xs bg-[#3ca2fa]/20 text-[#3ca2fa] px-2 py-1 rounded flex items-center gap-1">
-                      <ImageIcon className="w-3 h-3" />
-                      {project.images.length + 1}
+              
+              <div className="p-5 flex flex-col flex-1">
+                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#3ca2fa] transition-colors line-clamp-1">{project.title}</h3>
+                
+                <p className="text-sm text-gray-400 mb-5 line-clamp-2 leading-relaxed flex-1">
+                  {project.description}
+                </p>
+                
+                <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-gray-800/60">
+                  {project.tags?.slice(0, 3).map((tag, i) => (
+                    <span key={i} className="text-xs font-semibold bg-[#3ca2fa]/10 text-[#3ca2fa] border border-[#3ca2fa]/20 px-3 py-1 rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                  {project.tags?.length > 3 && (
+                    <span className="text-xs font-medium bg-gray-800 text-gray-400 border border-gray-700 px-3 py-1 rounded-full flex items-center justify-center">
+                      +{project.tags.length - 3}
                     </span>
                   )}
-                </div>
-                <p className="text-sm text-gray-400 mt-1 line-clamp-2">{project.description}</p>
-                <div className="flex flex-wrap gap-1 mt-3">
-                  {project.tags?.slice(0, 3).map((tag, i) => (
-                    <span key={i} className="text-xs bg-gray-700 text-[#3ca2fa] px-2 py-1 rounded">{tag}</span>
-                  ))}
                 </div>
               </div>
             </div>
@@ -627,37 +639,48 @@ export default function AdminDashboard() {
       ) : (
         <div className="space-y-4">
           {experiences.map(exp => (
-            <div key={exp.id} className="bg-gray-800 p-4 rounded-xl border border-gray-700 flex items-start gap-4 group">
-              <div className="w-12 h-12 bg-emerald-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div key={exp.id} className="bg-[#1a1f2e] p-5 rounded-2xl border border-gray-800 flex items-start gap-5 group hover:border-emerald-500/50 hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300">
+              <div className="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-emerald-500/20 group-hover:scale-110 transition-transform duration-300">
                 <Briefcase className="w-6 h-6 text-emerald-400" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="font-semibold text-white">{exp.title}</h3>
-                    <p className="text-emerald-400">{exp.company}</p>
-                    <p className="text-sm text-gray-400">{exp.location} • {exp.date}</p>
+                    <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">{exp.title}</h3>
+                    <p className="text-emerald-400/90 font-medium">{exp.company}</p>
+                    <p className="text-sm text-gray-400 mt-1">{exp.location} • {exp.date}</p>
                   </div>
-                  <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
                     <button
                       onClick={() => handleEditExperience(exp)}
-                      className="p-2 bg-[#3ca2fa] hover:bg-[#3ca2fa]/80 text-gray-900 rounded-lg transition"
+                      className="p-2 bg-gray-800 hover:bg-[#3ca2fa] text-gray-400 hover:text-white rounded-xl transition-all duration-300 border border-gray-700 hover:border-[#3ca2fa]"
+                      title="Edit Experience"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleDeleteExperience(exp.id)}
-                      className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
+                      className="p-2 bg-gray-800 hover:bg-red-500 text-gray-400 hover:text-white rounded-xl transition-all duration-300 border border-gray-700 hover:border-red-500"
+                      title="Delete Experience"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {exp.technologies?.slice(0, 4).map((tech, i) => (
-                    <span key={i} className="text-xs bg-gray-700 text-emerald-400 px-2 py-1 rounded">{tech}</span>
-                  ))}
-                </div>
+                {exp.technologies && exp.technologies.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-800/60">
+                    {exp.technologies.slice(0, 5).map((tech, i) => (
+                      <span key={i} className="text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full">
+                        {tech}
+                      </span>
+                    ))}
+                    {exp.technologies.length > 5 && (
+                      <span className="text-xs font-medium bg-gray-800 text-gray-400 border border-gray-700 px-3 py-1 rounded-full flex items-center justify-center">
+                        +{exp.technologies.length - 5}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}
