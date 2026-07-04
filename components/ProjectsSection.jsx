@@ -11,6 +11,7 @@ const CaseStudyCard = ({ project }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const allImages = [project.image, ...(project.images || [])].filter(Boolean);
 
   useEffect(() => {
@@ -33,56 +34,18 @@ const CaseStudyCard = ({ project }) => {
     setActiveImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
-  return (
-    <div className="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16 bg-[#0B1120]/90 backdrop-blur-xl rounded-none md:rounded-3xl p-5 md:p-8 lg:p-12 border-y md:border border-white/10 shadow-2xl w-full mx-auto min-h-[500px] lg:min-h-[600px]">
-      {/* Left Content */}
-      <div className="flex-1 space-y-4 md:space-y-6 flex flex-col justify-center order-2 lg:order-1 px-4 md:px-0">
-        <div className="inline-block px-3 py-1 rounded-md bg-[#10B981]/10 text-[#10B981] text-[10px] md:text-xs font-bold tracking-widest uppercase border border-[#10B981]/20 self-start">
-          {project.tags?.[0] || 'Web Development'}
-        </div>
-        
-        <h3 className="text-2xl md:text-3xl lg:text-5xl font-bold text-white tracking-tight">
-          {project.title}
-        </h3>
-        
-        <p className="text-gray-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl">
-          {project.description}
-        </p>
-        
-        <div className="border-l-4 border-yellow-500 pl-4 py-2 bg-yellow-500/5 rounded-r-lg">
-          <p className="text-yellow-500 text-xs md:text-sm italic font-medium">
-            {project.achievements?.[0] || "Provided a modern robust solution that significantly reduced operational costs and increased efficiency by 70%."}
-          </p>
-        </div>
-        
-        <div className="pt-4 flex flex-wrap items-center gap-4 md:gap-6">
-          <a 
-            href={project.previewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 text-white text-sm md:text-base font-semibold hover:text-[#3ca2fa] transition-colors"
-          >
-            Read More
-            <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#3ca2fa] group-hover:bg-[#3ca2fa] group-hover:text-white transition-all">
-              <ArrowRight className="w-4 h-4" />
-            </div>
-          </a>
-          
-          <a 
-            href={project.gitUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-500 hover:text-white transition-colors text-xs md:text-sm font-medium"
-          >
-            View Code
-          </a>
-        </div>
-      </div>
+  const maxDescLength = 150;
+  const shouldTruncate = project.description?.length > maxDescLength;
+  const displayDescription = isExpanded 
+    ? project.description 
+    : (shouldTruncate ? project.description.slice(0, maxDescLength) + "..." : project.description);
 
-      {/* Right Image Carousel */}
-      <div className="flex-1 w-full flex items-center justify-center order-1 lg:order-2 px-1 md:px-0">
+  return (
+    <div className="flex flex-col lg:flex-row bg-[#020817]/90 backdrop-blur-xl rounded-xl border border-slate-800 shadow-2xl overflow-hidden w-full max-w-5xl mx-auto">
+      {/* Right Image Carousel (Moved to top on mobile, left on desktop) */}
+      <div className="w-full lg:w-[55%] relative bg-slate-900/30 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-800">
         <div 
-          className="relative w-full h-[250px] md:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl group border border-white/10 bg-black/40 cursor-pointer"
+          className="relative w-full h-[250px] md:h-[350px] lg:absolute lg:inset-0 cursor-pointer group"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onClick={() => setLightboxOpen(true)}
@@ -90,17 +53,17 @@ const CaseStudyCard = ({ project }) => {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeImageIndex}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="absolute inset-0 w-full h-full p-2 md:p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 w-full h-full p-6 md:p-10"
             >
               <Image
                 src={allImages[activeImageIndex]}
                 alt={`${project.title} screenshot ${activeImageIndex + 1}`}
                 fill
-                className="object-contain"
+                className="object-contain drop-shadow-2xl filter transition-transform duration-500 group-hover:scale-[1.02]"
               />
             </motion.div>
           </AnimatePresence>
@@ -110,15 +73,15 @@ const CaseStudyCard = ({ project }) => {
             <>
               <button
                 onClick={prevImage}
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-[#3ca2fa] transition-all lg:opacity-0 lg:group-hover:opacity-100 z-10"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-950/60 border border-slate-800 text-slate-300 flex items-center justify-center hover:bg-slate-800 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-10"
               >
-                <ChevronLeft className="w-4 h-4 md:w-6 md:h-6" />
+                <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-[#3ca2fa] transition-all lg:opacity-0 lg:group-hover:opacity-100 z-10"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-950/60 border border-slate-800 text-slate-300 flex items-center justify-center hover:bg-slate-800 hover:text-white transition-all opacity-0 group-hover:opacity-100 z-10"
               >
-                <ChevronRight className="w-4 h-4 md:w-6 md:h-6" />
+                <ChevronRight className="w-4 h-4" />
               </button>
 
               {/* Internal Pagination Dots */}
@@ -127,21 +90,73 @@ const CaseStudyCard = ({ project }) => {
                   <button
                     key={idx}
                     onClick={(e) => { e.stopPropagation(); setActiveImageIndex(idx); }}
-                    className={`w-1.5 h-1.5 rounded-full transition-all ${
-                      idx === activeImageIndex ? 'bg-[#3ca2fa] w-3' : 'bg-white/30'
+                    className={`h-1.5 rounded-full transition-all ${
+                      idx === activeImageIndex ? 'bg-[#3ca2fa] w-4' : 'bg-slate-600 w-1.5'
                     }`}
                   />
                 ))}
               </div>
             </>
           )}
-
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#0B1120]/40 to-transparent pointer-events-none"></div>
           
           {/* Fullscreen icon indicator */}
-          <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none border border-white/10 shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+          <div className="absolute top-4 right-4 bg-slate-950/60 backdrop-blur-md p-2 rounded-full border border-slate-800 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
           </div>
+        </div>
+      </div>
+
+      {/* Left Content (Text) */}
+      <div className="flex flex-col w-full lg:w-[45%] p-6 md:p-8 lg:p-10 justify-center">
+        <div className="space-y-4">
+          <div className="inline-flex items-center rounded-full border border-slate-800 bg-slate-900/50 px-3 py-1 text-xs font-medium text-[#3ca2fa]">
+            {project.tags?.[0] || 'Web Development'}
+          </div>
+          
+          <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-50">
+            {project.title}
+          </h3>
+          
+          <div className="text-sm md:text-base text-slate-400 leading-relaxed">
+            {displayDescription}
+            {shouldTruncate && (
+              <button 
+                onClick={() => setIsExpanded(!isExpanded)} 
+                className="ml-2 text-[#3ca2fa] hover:text-blue-400 font-medium transition-colors focus:outline-none"
+              >
+                {isExpanded ? "Show less" : "Read more"}
+              </button>
+            )}
+          </div>
+          
+          {project.achievements?.[0] && (
+            <div className="rounded-lg bg-blue-950/20 p-4 border border-blue-900/30">
+              <p className="text-blue-200/80 text-sm font-medium flex gap-2.5 items-start">
+                <span className="text-[#3ca2fa] mt-0.5">✦</span>
+                {project.achievements[0]}
+              </p>
+            </div>
+          )}
+        </div>
+        
+        <div className="mt-8 flex flex-wrap items-center gap-4 pt-6 border-t border-slate-800/60">
+          <a 
+            href={project.previewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-slate-50 px-6 text-sm font-medium text-slate-900 shadow hover:bg-slate-200 transition-colors"
+          >
+            Live Preview
+          </a>
+          
+          <a 
+            href={project.gitUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 items-center justify-center rounded-md border border-slate-700 bg-transparent px-6 text-sm font-medium text-slate-300 shadow-sm hover:bg-slate-800 hover:text-slate-50 transition-colors"
+          >
+            Source Code
+          </a>
         </div>
       </div>
 
@@ -160,6 +175,11 @@ const ProjectsSection = () => {
   const [projects, setProjects] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset, velocity) => {
+    return Math.abs(offset) * velocity;
+  };
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -226,7 +246,7 @@ const ProjectsSection = () => {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative w-full md:px-20">
+        <div className="relative w-full px-4">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
               key={currentIndex}
@@ -239,44 +259,58 @@ const ProjectsSection = () => {
                 x: { type: "spring", stiffness: 300, damping: 30 },
                 opacity: { duration: 0.2 }
               }}
-              className="w-full flex justify-center"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={1}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = swipePower(offset.x, velocity.x);
+
+                if (swipe < -swipeConfidenceThreshold) {
+                  paginate(1);
+                } else if (swipe > swipeConfidenceThreshold) {
+                  paginate(-1);
+                }
+              }}
+              className="w-full flex justify-center touch-pan-y"
             >
               <CaseStudyCard project={projects[currentIndex]} />
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation Arrows - Repositioned and Restyled */}
-          <div className="flex justify-center items-center gap-10 mt-8 lg:mt-0">
+        {/* Bottom Controls */}
+        <div className="flex flex-row justify-between items-center w-full max-w-5xl mx-auto px-4 mt-8 md:mt-10">
+          {/* Pagination Dots */}
+          <div className="flex gap-3 md:gap-4">
+            {projects.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  setDirection(idx > currentIndex ? 1 : -1);
+                  setCurrentIndex(idx);
+                }}
+                className={`h-1.5 md:h-2.5 rounded-full transition-all duration-300 ${
+                  idx === currentIndex ? 'w-6 md:w-10 bg-[#3ca2fa]' : 'w-1.5 md:w-2.5 bg-slate-700 hover:bg-slate-500'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="flex items-center gap-4">
             <button
               onClick={() => paginate(-1)}
-              className="lg:absolute lg:left-0 lg:top-1/2 lg:-translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-[#3ca2fa] hover:border-[#3ca2fa] transition-all z-30 shadow-xl backdrop-blur-md"
+              className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#020817] border border-slate-800 flex items-center justify-center text-slate-300 hover:bg-slate-800 hover:text-white hover:border-slate-600 transition-all shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-[#0B1120]"
             >
-              <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
             </button>
-            
             <button
               onClick={() => paginate(1)}
-              className="lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-[#3ca2fa] hover:border-[#3ca2fa] transition-all z-30 shadow-xl backdrop-blur-md"
+              className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#020817] border border-slate-800 flex items-center justify-center text-slate-300 hover:bg-slate-800 hover:text-white hover:border-slate-600 transition-all shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-[#0B1120]"
             >
-              <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
             </button>
           </div>
         </div>
-
-        {/* Pagination Dots */}
-        <div className="flex justify-center gap-3 md:gap-4">
-          {projects.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                setDirection(idx > currentIndex ? 1 : -1);
-                setCurrentIndex(idx);
-              }}
-              className={`h-1.5 md:h-2.5 rounded-full transition-all duration-300 ${
-                idx === currentIndex ? 'w-6 md:w-10 bg-[#10B981]' : 'w-1.5 md:w-2.5 bg-white/20 hover:bg-white/40'
-              }`}
-            />
-          ))}
         </div>
       </div>
     </section>
