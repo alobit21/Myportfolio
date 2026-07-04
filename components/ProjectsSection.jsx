@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight, Eye, Github, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { Boxes } from "@/components/ui/background-boxes";
@@ -41,7 +41,7 @@ const CaseStudyCard = ({ project }) => {
     : (shouldTruncate ? project.description.slice(0, maxDescLength) + "..." : project.description);
 
   return (
-    <div className="flex flex-col lg:flex-row bg-[#020817]/90 backdrop-blur-xl rounded-xl border border-slate-800 shadow-2xl overflow-hidden w-full max-w-5xl mx-auto">
+    <div className="flex flex-col lg:flex-row bg-[#020817]/90 backdrop-blur-xl rounded-xl border border-slate-800 shadow-2xl overflow-hidden w-full h-full">
       {/* Right Image Carousel (Moved to top on mobile, left on desktop) */}
       <div className="w-full lg:w-[55%] relative bg-slate-900/30 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-800">
         <div 
@@ -118,15 +118,18 @@ const CaseStudyCard = ({ project }) => {
           </h3>
           
           <div className="text-sm md:text-base text-slate-400 leading-relaxed">
-            {displayDescription}
-            {shouldTruncate && (
-              <button 
-                onClick={() => setIsExpanded(!isExpanded)} 
-                className="ml-2 text-[#3ca2fa] hover:text-blue-400 font-medium transition-colors focus:outline-none"
-              >
-                {isExpanded ? "Show less" : "Read more"}
-              </button>
+            {isExpanded && (
+              <div className="mb-4 text-slate-300">
+                {project.description}
+              </div>
             )}
+            <button 
+              onClick={() => setIsExpanded(!isExpanded)} 
+              className="inline-flex items-center gap-2 text-xs font-medium text-[#3ca2fa] hover:text-blue-400 transition-colors bg-blue-950/30 px-3 py-1.5 rounded-full border border-blue-900/50 focus:outline-none"
+            >
+              <Info className="w-3.5 h-3.5" />
+              {isExpanded ? "Hide Description" : "View Description"}
+            </button>
           </div>
           
           {project.achievements?.[0] && (
@@ -139,13 +142,14 @@ const CaseStudyCard = ({ project }) => {
           )}
         </div>
         
-        <div className="mt-8 flex flex-wrap items-center gap-4 pt-6 border-t border-slate-800/60">
+        <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-6 border-t border-slate-800/60">
           <a 
             href={project.previewUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-slate-50 px-6 text-sm font-medium text-slate-900 shadow hover:bg-slate-200 transition-colors"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-slate-50 px-5 text-sm font-medium text-slate-900 shadow hover:bg-slate-200 transition-colors whitespace-nowrap"
           >
+            <Eye className="w-4 h-4" />
             Live Preview
           </a>
           
@@ -153,8 +157,9 @@ const CaseStudyCard = ({ project }) => {
             href={project.gitUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-10 items-center justify-center rounded-md border border-slate-700 bg-transparent px-6 text-sm font-medium text-slate-300 shadow-sm hover:bg-slate-800 hover:text-slate-50 transition-colors"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-slate-700 bg-transparent px-5 text-sm font-medium text-slate-300 shadow-sm hover:bg-slate-800 hover:text-slate-50 transition-colors whitespace-nowrap"
           >
+            <Github className="w-4 h-4" />
             Source Code
           </a>
         </div>
@@ -228,7 +233,7 @@ const ProjectsSection = () => {
       {/* Gradient Mask for Background */}
       <div className="absolute inset-0 w-full h-full bg-slate-900 [mask-image:radial-gradient(transparent,white)] pointer-events-none z-10" />
 
-      <div className="relative z-20 w-full md:max-w-7xl mx-auto space-y-10 md:space-y-16">
+      <div className="relative z-20 w-[98%] mx-auto space-y-10 md:space-y-16">
         {/* Header */}
         <div className="text-center space-y-4 md:space-y-6 px-4">
           <div className="flex items-center justify-center gap-3">
@@ -246,7 +251,7 @@ const ProjectsSection = () => {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative w-full px-4">
+        <div className="relative w-full">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
               key={currentIndex}
@@ -278,7 +283,7 @@ const ProjectsSection = () => {
           </AnimatePresence>
 
         {/* Bottom Controls */}
-        <div className="flex flex-row justify-between items-center w-full max-w-5xl mx-auto px-4 mt-8 md:mt-10">
+        <div className="flex flex-row justify-between items-center w-[98%] mx-auto px-4 mt-8 md:mt-10">
           {/* Pagination Dots */}
           <div className="flex gap-3 md:gap-4">
             {projects.map((_, idx) => (
