@@ -1,11 +1,11 @@
 import React from 'react'
-import HeroSection from '../components/HeroSection';
-import AboutSection from '../components/AboutSection';
-import ProjectSection from '../components/ProjectsSection';
-import EmailSection from "../components/EmailSection";
-import ExperienceSection from '../components/ExperienceSection';
+import HeroSection from '@/components/HeroSection';
+import AboutSection from '@/components/AboutSection';
+import ProjectSection from '@/components/ProjectsSection';
+import EmailSection from "@/components/EmailSection";
+import ExperienceSection from '@/components/ExperienceSection';
 
-import TechnologiesStackSection from '../components/TechnologiesStackSection'
+import TechnologiesStackSection from '@/components/TechnologiesStackSection';
 export default function Home(){
   return(
     <main className="flex min-h-screen flex-col">
