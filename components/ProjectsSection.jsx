@@ -57,13 +57,13 @@ const CaseStudyCard = ({ project }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 w-full h-full p-6 md:p-10"
+              className="absolute inset-0 w-full h-full"
             >
               <Image
                 src={allImages[activeImageIndex]}
                 alt={`${project.title} screenshot ${activeImageIndex + 1}`}
                 fill
-                className="object-contain drop-shadow-2xl filter transition-transform duration-500 group-hover:scale-[1.02]"
+                className="object-cover object-top filter transition-transform duration-700 group-hover:scale-[1.03]"
               />
             </motion.div>
           </AnimatePresence>
