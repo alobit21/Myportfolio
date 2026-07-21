@@ -38,18 +38,19 @@ const CaseStudyCard = ({ project }) => {
     setActiveImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
-  const maxDescLength = 150;
+  const maxDescLength = 200;
   const shouldTruncate = project.description?.length > maxDescLength;
-  const displayDescription = isExpanded 
-    ? project.description 
-    : (shouldTruncate ? project.description.slice(0, maxDescLength) + "..." : project.description);
+  const displayDescription = shouldTruncate 
+  ? project.description.slice(0, maxDescLength) + "..." 
+  : project.description;
+
 
   return (
-    <div className="flex flex-col lg:flex-row bg-[#020817]/90 backdrop-blur-xl rounded-xl border border-slate-800 shadow-2xl overflow-hidden w-full h-full">
-      {/* Right Image Carousel (Moved to top on mobile, left on desktop) */}
-      <div className="w-full lg:w-[55%] relative bg-slate-900/30 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-800">
+    <div className="flex flex-col lg:flex-row bg-[#020817]/90 backdrop-blur-xl rounded-xl border border-slate-800 shadow-2xl overflow-hidden w-full h-full lg:min-h-[520px]">
+      {/* Image Carousel */}
+      <div className="w-full lg:w-[55%] relative bg-slate-900/30 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-800 lg:min-h-[520px]">
         <div 
-          className="relative w-full h-[180px] sm:h-[250px] md:h-[350px] lg:absolute lg:inset-0 cursor-pointer group"
+          className="relative w-full h-[220px] sm:h-[300px] md:h-[400px] lg:h-full cursor-pointer group"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           onClick={() => setLightboxOpen(true)}
@@ -68,7 +69,7 @@ const CaseStudyCard = ({ project }) => {
                 src={allImages[activeImageIndex]}
                 alt={`${project.title} screenshot ${activeImageIndex + 1}`}
                 fill
-                className="object-cover object-top filter transition-transform duration-700 group-hover:scale-[1.03]"
+                className="object-cover object-center filter transition-transform duration-700 group-hover:scale-[1.03]"
               />
             </motion.div>
           </AnimatePresence>
@@ -113,7 +114,7 @@ const CaseStudyCard = ({ project }) => {
 
       {/* Left Content (Text) */}
       <div className="flex flex-col w-full lg:w-[45%] p-4 sm:p-6 md:p-8 lg:p-10 justify-center">
-        <div className="space-y-2 sm:space-y-4">
+        <div className="space-y-3 sm:space-y-5">
           <div className="inline-flex items-center rounded-full border border-slate-800 bg-slate-900/50 px-3 py-1 text-[10px] md:text-xs font-medium text-[#3ca2fa]">
             {project.tags?.[0] || 'Web Development'}
           </div>
@@ -123,18 +124,32 @@ const CaseStudyCard = ({ project }) => {
           </h3>
           
           <div className="text-xs sm:text-sm md:text-base text-slate-400 leading-relaxed">
-            {isExpanded && (
-              <div className="mb-3 text-slate-300">
-                {project.description}
-              </div>
-            )}
-            <button 
-              onClick={() => setIsExpanded(!isExpanded)} 
-              className="inline-flex items-center gap-2 text-xs font-medium text-[#3ca2fa] hover:text-blue-400 transition-colors bg-blue-950/30 px-3 py-1.5 rounded-full border border-blue-900/50 focus:outline-none"
-            >
-              <Info className="w-3.5 h-3.5" />
-              {isExpanded ? "Hide Description" : "View Description"}
-            </button>
+             <p className="hidden sm:block text-slate-300">
+    {project.description}
+  </p>
+           
+            {/* Mobile only: truncate + toggle */}
+  <div className="sm:hidden">
+    {isExpanded && (
+      <div className="mb-3 text-slate-300">
+        {project.description}
+      </div>
+    )}
+    {shouldTruncate && !isExpanded && (
+      <p className="mb-3">{displayDescription}</p>
+    )}
+    {!shouldTruncate && !isExpanded && (
+      <p className="mb-3">{project.description}</p>
+    )}
+    <button 
+      onClick={() => setIsExpanded(!isExpanded)} 
+      className="inline-flex items-center gap-2 text-xs font-medium text-[#3ca2fa] hover:text-blue-400 transition-colors bg-blue-950/30 px-3 py-1.5 rounded-full border border-blue-900/50 focus:outline-none"
+    >
+      <Info className="w-3.5 h-3.5" />
+      {isExpanded ? "Hide Description" : "View Description"}
+    </button>
+  </div>
+           
           </div>
           
           {project.achievements?.[0] && (
