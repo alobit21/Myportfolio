@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, ArrowRight, Eye, Github, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Boxes } from "@/components/ui/background-boxes";
 import ImageLightbox from './ImageLightbox';
 
-const CaseStudyCard = ({ project }) => {
+const CaseStudyCard = memo(({ project }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -125,8 +125,8 @@ const CaseStudyCard = ({ project }) => {
           
           <div className="text-xs sm:text-sm md:text-base text-slate-400 leading-relaxed">
              <p className="hidden sm:block text-slate-300">
-    {project.description}
-  </p>
+              {project.description}
+            </p>
            
             {/* Mobile only: truncate + toggle */}
   <div className="sm:hidden">
@@ -194,7 +194,7 @@ const CaseStudyCard = ({ project }) => {
       )}
     </div>
   );
-};
+});
 
 const ProjectsSection = () => {
   const [projects, setProjects] = useState([]);
@@ -265,7 +265,7 @@ const ProjectsSection = () => {
 
       <div className="relative z-20 w-[98%] mx-auto space-y-6 md:space-y-16">
         {/* Header */}
-        <div className="text-center space-y-2 md:space-y-6 px-4">
+        <div className="text-center space-y-2 md:space-y-6 px-4" data-aos="fade-up">
           <div className="flex items-center justify-center gap-3">
             <div className="h-[2px] w-6 md:w-8 bg-[#10B981]"></div>
             <span className="text-[#10B981] text-[10px] md:text-sm font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase">My Success Stories</span>

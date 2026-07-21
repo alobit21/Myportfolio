@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,13 +9,13 @@ export default function ImageLightbox({ images, initialIndex = 0, onClose }) {
   // Close on Escape key and navigate with arrows
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') onCloseRef.current();
       if (e.key === 'ArrowRight') nextImage();
       if (e.key === 'ArrowLeft') prevImage();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, images.length, onClose]); // Added dependencies
+  }, [currentIndex, images.length]);
 
   const nextImage = (e) => {
     e?.stopPropagation();
@@ -26,6 +26,9 @@ export default function ImageLightbox({ images, initialIndex = 0, onClose }) {
     e?.stopPropagation();
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
+
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   if (!images || images.length === 0) return null;
 

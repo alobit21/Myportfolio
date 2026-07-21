@@ -23,18 +23,17 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center text-white py-16 px-4 sm:px-6 lg:px-8 overflow-hidden" 
-             style={{
-               backgroundImage: 'url(/images/hero-section/hero-section.jpeg)',
-               backgroundSize: '100% 100%',
-               backgroundPosition: 'center',
-               backgroundRepeat: 'no-repeat',
-               backgroundAttachment: 'fixed',
-               width: '100vw',
-               marginLeft: 'calc(-50vw + 50%)',
-               marginRight: 'calc(-50vw + 50%)'
-             }}>
-      <div className="absolute inset-0 bg-gray-900/80"></div>
+    <section className="relative min-h-screen flex items-center justify-center text-white py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: 'url(/images/hero-section/hero-section.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+      <div className="absolute inset-0 bg-gray-900/80 z-[1]"></div>
       <div className="relative z-10 container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Text Content */}

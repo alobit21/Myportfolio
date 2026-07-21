@@ -146,7 +146,7 @@ const AboutSection = () => {
   return (
     <section id="about" className="py-20 bg-gray-900 text-white overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-6 mb-16">
+        <div className="text-center space-y-6 mb-16" data-aos="fade-up">
           <div className="flex items-center justify-center gap-3">
             <div className="h-[2px] w-8 bg-[#10B981]"></div>
             <span className="text-[#10B981] text-sm font-bold tracking-[0.3em] uppercase">Who I Am</span>

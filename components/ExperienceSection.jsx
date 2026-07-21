@@ -72,7 +72,7 @@ export default function ExperienceSection() {
         className="fixed w-6 h-6 bg-[#3ca2fa] rounded-full pointer-events-none mix-blend-screen opacity-50 z-50"
       />
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-6 mb-16">
+        <div className="text-center space-y-6 mb-16" data-aos="fade-up">
           <div className="flex items-center justify-center gap-3">
             <div className="h-[2px] w-8 bg-[#10B981]"></div>
             <span className="text-[#10B981] text-sm font-bold tracking-[0.3em] uppercase">My Career Path</span>

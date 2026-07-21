@@ -61,7 +61,6 @@ const itemVariants = {
 const TechnologiesStackSection = () => {
   // Refs and State
   const ref = useRef(null);
-  const containerRef = useRef(null);
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   const [techItems, setTechItems] = useState([...TECHNOLOGIES, ...TECHNOLOGIES]);
@@ -70,32 +69,10 @@ const TechnologiesStackSection = () => {
   useEffect(() => {
     if (isInView) {
       controls.start('visible');
-      startAutoScroll();
     }
   }, [controls, isInView]);
 
-  const startAutoScroll = () => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    let scrollPosition = 0;
-    const scrollWidth = container.scrollWidth / 2;
-
-    const scroll = () => {
-      scrollPosition += 0.5;
-      if (scrollPosition >= scrollWidth) {
-        scrollPosition = 0;
-      }
-      container.scrollTo({
-        left: scrollPosition,
-        behavior: 'smooth'
-      });
-      requestAnimationFrame(scroll);
-    };
-
-    const scrollId = requestAnimationFrame(scroll);
-    return () => cancelAnimationFrame(scrollId);
-  };
+  // Auto-scroll handled by CSS animation on the track
 
   // Helper Functions
   const getTechDetails = (techName) => {
@@ -145,18 +122,17 @@ const TechnologiesStackSection = () => {
   );
 
   return (
-    <section ref={ref} className="relative py-20 text-white overflow-hidden" 
-             style={{
-               backgroundImage: 'url(/images/footer/footer.jpeg)',
-               backgroundSize: 'cover',
-               backgroundPosition: 'center',
-               backgroundRepeat: 'no-repeat',
-               backgroundAttachment: 'fixed',
-               width: '100vw',
-               marginLeft: 'calc(-50vw + 50%)',
-               marginRight: 'calc(-50vw + 50%)'
-             }}>
-      <div className="absolute inset-0 bg-gray-900/60"></div>
+    <section ref={ref} className="relative py-20 text-white overflow-hidden">
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: 'url(/images/footer/footer.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+      <div className="absolute inset-0 bg-gray-900/60 z-[1]"></div>
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div 
@@ -202,20 +178,11 @@ const TechnologiesStackSection = () => {
           
           <div className="relative overflow-hidden py-4">
             <div className="relative h-48 flex items-center">
-              <motion.div
-                ref={containerRef}
-                className="flex items-center gap-8 absolute whitespace-nowrap"
-                animate={{
-                  x: ['0%', '-50%'],
-                }}
-                transition={{
-                  duration: 30,
-                  ease: 'linear',
-                  repeat: Infinity,
-                }}
+              <div
+                className="flex items-center gap-8 absolute whitespace-nowrap animate-marquee"
               >
                 {techItems.map(renderTechItem)}
-              </motion.div>
+              </div>
             </div>
             <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-gray-900 to-transparent z-10 pointer-events-none"></div>
             <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-gray-900 to-transparent z-10 pointer-events-none"></div>

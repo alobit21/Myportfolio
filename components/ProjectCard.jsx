@@ -1,14 +1,30 @@
 import React from "react";
 import { CodeBracketIcon, EyeIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
 
 const ProjectCard = ({ imgUrl, title, description, gitUrl, previewUrl }) => {
+  const isRemote = typeof imgUrl === 'string' && (imgUrl.startsWith('http://') || imgUrl.startsWith('https://'));
+
   return (
     <div>
-      <div
-        className="h-52 md:h-72 rounded-t-xl relative group"
-        style={{ background: `url(${imgUrl})`, backgroundSize: "cover" }}
-      >
+      <div className="h-52 md:h-72 rounded-t-xl relative group overflow-hidden">
+        {isRemote ? (
+          <img
+            src={imgUrl}
+            alt={title}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <Image
+            src={imgUrl}
+            alt={title}
+            fill
+            className="object-cover"
+            loading="lazy"
+          />
+        )}
         <div className="overlay items-center justify-center absolute top-0 left-0 w-full h-full bg-[#181818] bg-opacity-0 hidden group-hover:flex group-hover:bg-opacity-80 transition-all duration-500 ">
           <Link
             href={gitUrl}

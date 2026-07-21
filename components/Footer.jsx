@@ -79,7 +79,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 top-4 md:px-14 z-40 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8 lg:gap-16 pb-12">
           {/* Brand section */}
-          <div className="flex flex-col space-y-4">
+          <div className="flex flex-col space-y-4" data-aos="fade-up" data-aos-delay="100">
             <div className="flex items-center space-x-2">
               <span className="text-[#3ca2fa] text-xl md:text-2xl lg:text-3xl font-extrabold">
                 &lt;/&gt;
@@ -92,8 +92,8 @@ const Footer = () => {
           </div>
 
           {/* Footer link sections */}
-          {footerLinks.map((section) => (
-            <div key={section.title}>
+          {footerLinks.map((section, index) => (
+            <div key={section.title} data-aos="fade-up" data-aos-delay={index === 0 ? 200 : 300}>
               <h4 className="text-white text-lg font-semibold mb-6">
                 {section.title}
               </h4>
@@ -116,7 +116,7 @@ const Footer = () => {
           ))}
 
           {/* Contact section */}
-          <div>
+          <div data-aos="fade-up" data-aos-delay="400">
             <h4 className="text-white text-lg font-semibold mb-6">
               Contact
             </h4>

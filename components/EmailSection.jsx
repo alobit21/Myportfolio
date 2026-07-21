@@ -11,7 +11,7 @@ const ContactSection = () => {
     <section id="contact" className="py-24 bg-gray-900 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center space-y-6 mb-16">
+        <div className="text-center space-y-6 mb-16" data-aos="fade-up">
           <div className="flex items-center justify-center gap-3">
             <div className="h-[2px] w-8 bg-[#10B981]"></div>
             <span className="text-[#10B981] text-sm font-bold tracking-[0.3em] uppercase">Get In Touch</span>
@@ -28,7 +28,7 @@ const ContactSection = () => {
 
         <div className="flex flex-col md:flex-row items-stretch">
         {/* Left Section - Social Media */}
-        <div className="md:w-1/3 flex flex-col justify-between bg-gray-900 p-8 rounded shadow-lg">
+        <div className="md:w-1/3 flex flex-col justify-between bg-gray-900 p-8 rounded shadow-lg" data-aos="fade-right">
           <div className="space-y-4">
             <p className="text-white mb-6">
               Let's connect on social media. Feel free to reach out for collaborations, job opportunities, or just a chat!
@@ -51,7 +51,7 @@ const ContactSection = () => {
         </div>
 
         {/* Right Section - Contact Form */}
-        <div className="md:w-2/3 bg-gray-800/50 p-2 md:p-8 rounded shadow-lg flex flex-col justify-center border border-gray-700/50 backdrop-blur-sm">
+        <div className="md:w-2/3 bg-gray-800/50 p-2 md:p-8 rounded shadow-lg flex flex-col justify-center border border-gray-700/50 backdrop-blur-sm" data-aos="fade-left">
           <ContactForm />
         </div>
         </div>
